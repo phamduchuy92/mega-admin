@@ -6,6 +6,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 import { Authority } from "./config/authority.constants";
 import { LoginComponent } from "./login/login.component";
+import { UserRouteAccessService } from "./core/auth/user-route-access.service";
 
 const routes: Routes = [
   {
@@ -16,13 +17,13 @@ const routes: Routes = [
   {
     path: "",
     component: AdminLayoutComponent,
-    // children: [
-    //   {
-    //     path: "",
-    //     loadChildren:
-    //       "./layouts/admin-layout/admin-layout.module#AdminLayoutModule",
-    //   },
-    // ],
+    children: [
+      {
+        path: "",
+        loadChildren:
+          "./layouts/admin-layout/admin-layout.module#AdminLayoutModule",
+      },
+    ],
   },
   {
     path: "login",
@@ -40,7 +41,7 @@ const routes: Routes = [
     data: {
       authorities: [Authority.ADMIN],
     },
-    // canActivate: [UserRouteAccessService],
+    canActivate: [UserRouteAccessService],
     children: [
       {
         path: "",

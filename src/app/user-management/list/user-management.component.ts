@@ -34,7 +34,7 @@ export class UserManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.accountService.identity().subscribe(account => (this.currentAccount = account));
+    this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.handleNavigation();
   }
 
@@ -86,9 +86,6 @@ export class UserManagementComponent implements OnInit {
 
   private handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      console.log("activatedRoute", this.activatedRoute)
-      console.log("data", data)
-      console.log("params", params)
       const page = params.get('page');
       this.page = page !== null ? +page : 1;
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');

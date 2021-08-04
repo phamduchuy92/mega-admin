@@ -24,9 +24,9 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "src/assets/scss/material-dashboard.scss",
-              "src/assets/css/demo.css"
+              "src/assets/css/demo.css",
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

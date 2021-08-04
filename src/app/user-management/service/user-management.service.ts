@@ -21,8 +21,8 @@ export class UserManagementService {
     return this.http.put<IUser>(this.resourceUrl, user);
   }
 
-  find(login: string): Observable<IUser> {
-    return this.http.get<IUser>(`${this.resourceUrl}/${login}`);
+  find(id: number): Observable<IUser> {
+    return this.http.get<IUser>(`${this.resourceUrl}/${id}`);
   }
 
   query(req?: Pagination): Observable<HttpResponse<IUser[]>> {
@@ -30,11 +30,11 @@ export class UserManagementService {
     return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(login: string): Observable<{}> {
-    return this.http.delete(`${this.resourceUrl}/${login}`);
+  delete(id: number): Observable<{}> {
+    return this.http.delete(`${this.resourceUrl}/${id}`);
   }
 
   authorities(): Observable<string[]> {
-    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
+    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities', 'admin-mgmt'));
   }
 }

@@ -1,7 +1,14 @@
 <div class="alerts" role="alert">
   <div *ngFor="let alert of alerts" [ngClass]="setClasses(alert)">
-    <ngb-alert *ngIf="alert.message" [type]="alert.type" (closed)="close(alert)">
+    <!-- <ngb-alert *ngIf="alert.message" [type]="alert.type" (closed)="close(alert)">
       <pre [innerHTML]="alert.message"></pre>
-    </ngb-alert>
+    </ngb-alert> -->
+    <div class="alert alert-with-icon" [ngClass]="'alert-'+ alert.type" data-notify="container">
+      <i class="material-icons" data-notify="icon">add_alert</i>
+      <button mat-button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="close(alert)">
+          <i class="material-icons">close</i>
+      </button>
+      <span data-notify="message" [innerHTML]="alert.message"></span>
+    </div>
   </div>
 </div>
