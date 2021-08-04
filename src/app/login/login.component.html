@@ -1,0 +1,68 @@
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <form
+        class="login100-form validate-form"
+        role="form"
+        (ngSubmit)="login()"
+        [formGroup]="loginForm"
+      >
+        <span class="login100-form-title p-b-43"> Emi Agency </span>
+
+        <div class="wrap-input100 validate-input">
+          <input
+            type="text"
+            class="input100"
+            name="username"
+            id="username"
+            formControlName="username"
+            #username
+            data-cy="username"
+            (change)="change()"
+          />
+          <span class="focus-input100"></span>
+          <span class="label-input100">Username</span>
+        </div>
+
+        <div class="wrap-input100 validate-input">
+          <input
+            type="password"
+            class="input100"
+            name="password"
+            id="password"
+            formControlName="password"
+            data-cy="password"
+          />
+          <span class="focus-input100"></span>
+          <span class="label-input100">Password</span>
+        </div>
+
+        <div class="flex-sb-m w-full p-t-3 p-b-32">
+          <div class="contact100-form-checkbox">
+            <input
+              class="input-checkbox100"
+              type="checkbox"
+              name="rememberMe"
+              id="rememberMe"
+              formControlName="rememberMe"
+            />
+            <label class="label-checkbox100" for="rememberMe">
+              Remember me
+            </label>
+          </div>
+        </div>
+
+        <div class="container-login100-form-btn">
+          <button class="login100-form-btn" type="submit" data-cy="submit">
+            Đăng nhập
+          </button>
+        </div>
+      </form>
+
+      <div
+        class="login100-more"
+        style="background-image: url('/assets/img/login.jpg')"
+      ></div>
+    </div>
+  </div>
+</div>

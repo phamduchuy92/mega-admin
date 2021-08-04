@@ -1,27 +1,48 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { LOCALE_ID, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { RouterModule } from "@angular/router";
 
+import { AppRoutingModule } from "./app.routing";
+import { ComponentsModule } from "./components/components.module";
 
-import { AppRoutingModule } from './app.routing';
-import { ComponentsModule } from './components/components.module';
+import { AppComponent } from "./app.component";
 
-import { AppComponent } from './app.component';
+import { AgmCoreModule } from "@agm/core";
+import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { TableListComponent } from './table-list/table-list.component';
-import { TypographyComponent } from './typography/typography.component';
-import { IconsComponent } from './icons/icons.component';
-import { MapsComponent } from './maps/maps.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { UpgradeComponent } from './upgrade/upgrade.component';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+// + ngx-translate
 import {
-  AgmCoreModule
-} from '@agm/core';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+  TranslateModule,
+  TranslateService,
+  TranslateLoader,
+  MissingTranslationHandler,
+} from "@ngx-translate/core";
+import {
+  translatePartialLoader,
+  missingTranslationHandler,
+} from "./config/translation.config";
+import { registerLocaleData } from "@angular/common";
+import locale from "@angular/common/locales/en";
+// + ngx-formly
+import { FormlyModule } from "@ngx-formly/core";
+import { FormlyMaterialModule } from "@ngx-formly/material";
+// + ngx-webstorage
+import { NgxWebstorageModule } from "ngx-webstorage";
+// + dependencies from jhipter
+import { SharedModule } from "./shared/shared.module";
+import { ApplicationConfigService } from "./core/config/application-config.service";
+import { SERVER_API_URL } from "./app.constants";
+// + interceptor
+import { httpInterceptorProviders } from "app/core/interceptor/index";
+// + get all free icons in pack fortawesome
+import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
+import { fontAwesomeIcons } from "./config/font-awesome-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
 
 @NgModule({
   imports: [
@@ -33,15 +54,47 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
     RouterModule,
     AppRoutingModule,
     AgmCoreModule.forRoot({
-      apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
-    })
+      apiKey: "YOUR_GOOGLE_MAPS_API_KEY",
+    }),
+    FormlyModule.forRoot({ extras: { lazyRender: true } }),
+    FormlyMaterialModule,
+    NgbModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: translatePartialLoader,
+        deps: [HttpClient],
+      },
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useFactory: missingTranslationHandler,
+      },
+    }),
+    NgxWebstorageModule.forRoot({
+      prefix: "jhi",
+      separator: "-",
+      caseSensitive: true,
+    }),
+    SharedModule,
   ],
-  declarations: [
-    AppComponent,
-    AdminLayoutComponent,
-
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  declarations: [AppComponent, AdminLayoutComponent],
+  providers: [{ provide: LOCALE_ID, useValue: "en" }, httpInterceptorProviders],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    applicationConfigService: ApplicationConfigService,
+    iconLibrary: FaIconLibrary,
+    translateService: TranslateService
+  ) {
+    applicationConfigService.setEndpointPrefix(SERVER_API_URL);
+    registerLocaleData(locale);
+    iconLibrary.addIcons(...fontAwesomeIcons);
+    // get all icons in pack
+    iconLibrary.addIconPacks(fas);
+    iconLibrary.addIconPacks(fab);
+    iconLibrary.addIconPacks(far);
+    translateService.setDefaultLang("vi");
+    translateService.use("vi");
+  }
+}
