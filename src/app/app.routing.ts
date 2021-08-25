@@ -31,7 +31,8 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        loadChildren: "./login/login.module#LoginModule",
+        loadChildren:
+          "./login/login.module#LoginModule",
       },
     ],
   },
@@ -47,6 +48,21 @@ const routes: Routes = [
         path: "",
         loadChildren:
           "./user-management/user-management.module#UserManagementModule",
+      },
+    ],
+  },
+  {
+    path: "ecommerce",
+    component: AdminLayoutComponent,
+    data: {
+      authorities: [Authority.ADMIN],
+    },
+    canActivate: [UserRouteAccessService],
+    children: [
+      {
+        path: "",
+        loadChildren:
+          "./ecommerce/ecommerce.module#EcommerceModule",
       },
     ],
   },

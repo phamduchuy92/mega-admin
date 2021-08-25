@@ -13,21 +13,21 @@
               >
 
               <div class="d-flex justify-content-end">
-                <button
+                <!-- <button
                   class="btn btn-info mr-2"
                   (click)="loadAll()"
                   [disabled]="isLoading"
                 >
-                  <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+                  <fa-icon icon="sync" [spin]="isLoading"></fa-icon>&nbsp;
                   <span jhiTranslate="userManagement.home.refreshListLabel"
                     >Refresh List</span
                   >
-                </button>
+                </button> -->
                 <button
-                  class="btn btn-primary jh-create-entity"
+                  class="btn btn-secondary jh-create-entity"
                   [routerLink]="['./new']"
                 >
-                  <fa-icon icon="plus"></fa-icon>
+                  <fa-icon icon="plus"></fa-icon>&nbsp;
                   <span jhiTranslate="userManagement.home.createLabel"
                     >Create a new User</span
                   >
@@ -52,42 +52,24 @@
                     [callback]="transition.bind(this)"
                   >
                     <th scope="col" jhiSortBy="id">
-                      <span jhiTranslate="global.field.id">ID</span>
+                      <span jhiTranslate="global.field.id">ID</span>&nbsp;
                       <fa-icon icon="sort"></fa-icon>
                     </th>
                     <th scope="col" jhiSortBy="login">
-                      <span jhiTranslate="userManagement.login">Login</span>
+                      <span jhiTranslate="userManagement.login">Login</span>&nbsp;
                       <fa-icon icon="sort"></fa-icon>
                     </th>
                     <th scope="col" jhiSortBy="email">
-                      <span jhiTranslate="userManagement.email">Email</span>
+                      <span jhiTranslate="userManagement.email">Email</span>&nbsp;
                       <fa-icon icon="sort"></fa-icon>
                     </th>
                     <th scope="col"></th>
                     <th scope="col" jhiSortBy="langKey">
-                      <span jhiTranslate="userManagement.langKey">Lang Key</span>
+                      <span jhiTranslate="userManagement.langKey">Lang Key</span>&nbsp;
                       <fa-icon icon="sort"></fa-icon>
                     </th>
                     <th scope="col">
-                      <span jhiTranslate="userManagement.profiles">Profiles</span>
-                    </th>
-                    <th scope="col" jhiSortBy="createdDate">
-                      <span jhiTranslate="userManagement.createdDate"
-                        >Created Date</span
-                      >
-                      <fa-icon icon="sort"></fa-icon>
-                    </th>
-                    <th scope="col" jhiSortBy="lastModifiedBy">
-                      <span jhiTranslate="userManagement.lastModifiedBy"
-                        >Last Modified By</span
-                      >
-                      <fa-icon icon="sort"></fa-icon>
-                    </th>
-                    <th scope="col" jhiSortBy="lastModifiedDate">
-                      <span jhiTranslate="userManagement.lastModifiedDate"
-                        >Last Modified Date</span
-                      >
-                      <fa-icon icon="sort"></fa-icon>
+                      <span jhiTranslate="userManagement.profiles">Profiles</span>&nbsp;
                     </th>
                     <th scope="col"></th>
                   </tr>
@@ -136,7 +118,7 @@
                           [routerLink]="['./', user.id, 'view']"
                           class="btn btn-info btn-sm"
                         >
-                          <fa-icon icon="eye"></fa-icon>
+                          <fa-icon icon="eye"></fa-icon>&nbsp;
                           <span
                             class="d-none d-md-inline"
                             jhiTranslate="entity.action.view"
@@ -150,7 +132,7 @@
                           queryParamsHandling="merge"
                           class="btn btn-primary btn-sm"
                         >
-                          <fa-icon icon="pencil-alt"></fa-icon>
+                          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;
                           <span
                             class="d-none d-md-inline"
                             jhiTranslate="entity.action.edit"
@@ -166,7 +148,7 @@
                             !currentAccount || currentAccount.login === user.login
                           "
                         >
-                          <fa-icon icon="times"></fa-icon>
+                          <fa-icon icon="times"></fa-icon>&nbsp;
                           <span
                             class="d-none d-md-inline"
                             jhiTranslate="entity.action.delete"
@@ -183,7 +165,7 @@
       
           <div class="card-footer" style="display: inline;">
             <div *ngIf="users">
-              <div class="row justify-content-center">
+              <!-- <div class="row justify-content-center">
                 <jhi-item-count
                   [params]="{
                     page: page,
@@ -191,7 +173,7 @@
                     itemsPerPage: itemsPerPage
                   }"
                 ></jhi-item-count>
-              </div>
+              </div> -->
       
               <div class="row justify-content-center">
                 <ngb-pagination

@@ -9,6 +9,8 @@ import { Login } from 'app/login/login.model';
 
 type JwtToken = {
   id_token: string;
+  login: string;
+  email: string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -42,12 +44,22 @@ export class AuthServerProvider {
 
   private authenticateSuccess(response: JwtToken, rememberMe: boolean): void {
     const jwt = response.id_token;
+    const login = response.login;
+    const email = response.email;
     if (rememberMe) {
       this.$localStorage.store('authenticationToken', jwt);
       this.$sessionStorage.clear('authenticationToken');
+      this.$localStorage.store('login', login);
+      this.$sessionStorage.clear('login');
+      this.$localStorage.store('email', email);
+      this.$sessionStorage.clear('email');
     } else {
       this.$sessionStorage.store('authenticationToken', jwt);
       this.$localStorage.clear('authenticationToken');
+      this.$sessionStorage.store('login', login);
+      this.$localStorage.clear('login');
+      this.$sessionStorage.store('email', email);
+      this.$localStorage.clear('email');
     }
   }
 }

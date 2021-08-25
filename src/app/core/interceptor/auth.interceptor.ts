@@ -20,10 +20,14 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     const token: string | null = this.localStorage.retrieve('authenticationToken') ?? this.sessionStorage.retrieve('authenticationToken');
+    const login: string | null = this.localStorage.retrieve('login') ?? this.sessionStorage.retrieve('login');
+    const email: string | null = this.localStorage.retrieve('email') ?? this.sessionStorage.retrieve('email');
     if (token) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
+          'X-User': login,
+          'X-Email': email,
         },
       });
     }

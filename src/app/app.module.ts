@@ -31,8 +31,9 @@ import { FormlyModule } from "@ngx-formly/core";
 import { FormlyMaterialModule } from "@ngx-formly/material";
 // + ngx-webstorage
 import { NgxWebstorageModule } from "ngx-webstorage";
+// + misc
+import { MiscModule } from "./misc/misc.module";
 // + dependencies from jhipter
-import { SharedModule } from "./shared/shared.module";
 import { ApplicationConfigService } from "./core/config/application-config.service";
 import { SERVER_API_URL } from "./app.constants";
 // + interceptor
@@ -56,9 +57,9 @@ import { far } from "@fortawesome/free-regular-svg-icons";
     AgmCoreModule.forRoot({
       apiKey: "YOUR_GOOGLE_MAPS_API_KEY",
     }),
-    FormlyModule.forRoot({ extras: { lazyRender: true } }),
-    FormlyMaterialModule,
+    // + ng-boostrap
     NgbModule,
+    // + ngx-translate
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -70,12 +71,14 @@ import { far } from "@fortawesome/free-regular-svg-icons";
         useFactory: missingTranslationHandler,
       },
     }),
+    // + ngx-webstorage
     NgxWebstorageModule.forRoot({
       prefix: "jhi",
       separator: "-",
       caseSensitive: true,
     }),
-    SharedModule,
+    // + misc
+    MiscModule,
   ],
   declarations: [AppComponent, AdminLayoutComponent],
   providers: [{ provide: LOCALE_ID, useValue: "en" }, httpInterceptorProviders],
