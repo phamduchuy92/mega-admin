@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { ITEMS_PER_PAGE } from "app/config/pagination.constants";
+import { ITEMS_PER_PAGE } from "app//config/pagination.constants";
 
-import { DataService } from "app/misc/model/data.service";
+import { EntityService } from "app//misc/model/entity.service";
 import { DataDeleteDialogComponent } from "./data-delete-dialog.component";
 
 import * as _ from "lodash";
@@ -17,6 +17,7 @@ import { FormGroup } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { FormlyFormOptions } from "@ngx-formly/core";
 import * as moment from "moment";
+import { plainToFlattenObject } from "app//misc/util/request-util";
 
 @Component({
   selector: "jhi-data-list",
@@ -31,14 +32,13 @@ export class DataComponent implements OnInit {
   property = "";
   apiEndpoint = "";
   queryParams: any = {};
-  img = "";
   title: any = {};
   // table
   columns: any[] = [];
   rows: any[] | null = [];
   properties: any[] = [];
   // pagination
-  isLoading = false;
+  isReady = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
   page = 1;
@@ -51,6 +51,7 @@ export class DataComponent implements OnInit {
   columnsMap: any = {};
   reference: any = {};
   referenceEndpoint: any = {};
+  itemsEndpoint: any = {};
   // search engine
   searchEngine: any = {};
   searchEngineModel: any = {};
@@ -65,7 +66,7 @@ export class DataComponent implements OnInit {
   constructor(
     protected titleService: Title,
     protected detectorService: DeviceDetectorService,
-    protected dataService: DataService,
+    protected dataService: EntityService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -77,7 +78,6 @@ export class DataComponent implements OnInit {
     combineLatest(
       this.activatedRoute.data.pipe(
         map((data) => {
-          console.log("activatedRoute data", data);
           // sort
           this.ascending = _.get(
             data.config,
@@ -101,13 +101,12 @@ export class DataComponent implements OnInit {
             _.get(data, "config.property")
           );
           // title
-          this.img = _.get(data.config, "config.img", undefined);
           this.title = _.get(
             data.config,
-            "config.title",
+            "config.title.index",
             "app.title." + this.property
           );
-          this.titleService.setTitle(this.title.index);
+          this.titleService.setTitle(this.title);
           // apiEndpoint and queryParams
           this.apiEndpoint = _.get(
             data.config,
@@ -191,7 +190,6 @@ export class DataComponent implements OnInit {
 
   // load data with search model and query params in config
   loadAll(): void {
-    this.isLoading = true;
     this.dataService
       .query(
         _.assign(
@@ -219,10 +217,10 @@ export class DataComponent implements OnInit {
       )
       .subscribe(
         (res: HttpResponse<any[]>) => {
-          this.isLoading = false;
+          this.isReady = true;
           this.onSuccess(res.body, res.headers);
         },
-        () => (this.isLoading = false)
+        () => (this.isReady = false)
       );
   }
 
@@ -255,24 +253,35 @@ export class DataComponent implements OnInit {
     );
   }
 
-  renderCell(row: any, property: any): any {
-    const content = _.get(this.columnsMap, [property, "template"])
-      ? _.template(_.get(this.columnsMap, [property, "template"]))(row)
-      : _.get(row, property, "");
-    if (_.isArray(content)) {
-      return _.map(content, (e) => _.get(this.reference, [property, e], e));
-    } else if (_.isPlainObject(content)) {
-      return jsyaml.dump(
-        _.forEach(content, (v, k) =>
-          _.get(this.reference, [property, v])
-            ? _.set(content, k, _.get(this.reference, [property, v]))
-            : _.set(content, k, v)
-        )
-      );
-    } else if (_.isDate(content)) {
-      return moment(content).format("YYYY/MM/DD HH:mm:ss [Z]");
+  renderCell(row: any, col: string): any {
+    // {{ _.get(reference, [c, _.get(val, c)], _.get(val, c)) }}
+    let val;
+    if (this.columnsMap[col].template) {
+      try {
+        val = _.template(this.columnsMap[col].template)(row);
+      } catch (e) {
+        val = _.get(row, col);
+      }
+    } else {
+      val = _.get(row, col);
     }
-    return _.get(this.reference, [property, content], content);
+    if (_.isArray(val)) {
+      return _.map(val, (v) => _.get(this.reference, [col, v], v));
+    } else if (_.isPlainObject(val)) {
+      // support for tree type
+      if (
+        _.map(plainToFlattenObject(val)).every((e) => typeof e == "boolean")
+      ) {
+        const parsedVal = _.filter(_.entries(plainToFlattenObject(val)), (e) =>
+          e.some((o) => o == true)
+        );
+        let res = {};
+        _.forEach(parsedVal, (v, k) => _.assign(res, _.set(res, v[0], "tree")));
+        return `<pre>${jsyaml.dump(res).replaceAll(": tree", "")}</pre>`;
+      }
+      return `<pre>${jsyaml.dump(val)}</pre>`;
+    }
+    return _.get(this.reference, [col, val], val);
   }
 
   private handleNavigation(): void {
@@ -282,9 +291,9 @@ export class DataComponent implements OnInit {
     ]).subscribe(([data, params]) => {
       const page = params.get("page");
       this.page = page !== null ? +page : 1;
-      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
+      const sort = (params.get("sort") ?? data["defaultSort"]).split(",");
       this.predicate = sort[0];
-      this.ascending = sort[1] === 'asc';
+      this.ascending = sort[1] === "asc";
       this.loadAll();
     });
   }
@@ -316,15 +325,17 @@ export class DataComponent implements OnInit {
       _.set(req, options.key, value);
       this.dataService
         .query(req, options.apiEndpoint)
-        .subscribe((referenceData) =>
-          _.forEach(referenceData.body, (e) =>
+        .subscribe((referenceData) => {
+          this.itemsEndpoint[key] = [];
+          _.forEach(referenceData.body, (e) => {
             _.set(
               this.reference,
               [key, _.get(e, options.key)],
               _.get(e, options.val)
-            )
-          )
-        );
+            );
+            this.itemsEndpoint[key].push(_.pick(e, [options.key, options.val]));
+          });
+        });
     });
   }
 }

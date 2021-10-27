@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from 'app/core/util/alert.service';
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/core/request/request-util';
-import { plainToFlattenObject } from 'app/misc/util/request-util';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { createRequestOption } from 'app//core/request/request-util';
+import { plainToFlattenObject } from '../util/request-util';
+import { SERVER_API_URL } from 'app//app.constants';
+import { AlertService } from 'app//core/util/alert.service';
 
 @Component({
   selector: 'jhi-formly-button',

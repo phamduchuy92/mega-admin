@@ -14,7 +14,7 @@ import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
 export class DataDetailComponent implements OnInit, AfterContentChecked {
   _ = _;
   // state
-  isLoading = false;
+  isReady = false;
   // config
   service = "";
   property = "";
@@ -35,7 +35,6 @@ export class DataDetailComponent implements OnInit, AfterContentChecked {
   ) {}
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.activatedRoute.data
       .pipe(
         map(({ config, model }) => {
@@ -53,7 +52,7 @@ export class DataDetailComponent implements OnInit, AfterContentChecked {
           this.fields = _.get(config, "config.fields", []);
         })
       )
-      .subscribe(() => (this.isLoading = false));
+      .subscribe(() => (this.isReady = true));
   }
 
   ngAfterContentChecked(): void {

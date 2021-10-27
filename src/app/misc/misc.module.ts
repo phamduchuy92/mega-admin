@@ -46,10 +46,16 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatTreeModule } from "@angular/material/tree";
 import { OverlayModule } from "@angular/cdk/overlay";
 // ngx-quill
+import { QuillModule } from "ngx-quill";
+// ngx-color-picker
+import { ColorPickerModule } from "ngx-color-picker";
+// ng-select
+import { NgSelectModule } from "@ng-select/ng-select";
+import { FormsModule } from "@angular/forms";
 // ngx-formly
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormlyModule } from "@ngx-formly/core";
-import { FormlyMaterialModule } from "@ngx-formly/material";
+import { FormlyBootstrapModule } from "@ngx-formly/bootstrap";
 // ngx-formly fields
 import { ButtonTypeComponent } from "./formly/button.type";
 import { TimeTypeComponent } from "./formly/timepicker.type";
@@ -62,16 +68,32 @@ import { FileUploadTypeComponent } from "./formly/file-upload.type";
 import { FileValueAccessorDirective } from "./formly/file-value-accessor";
 import { TemplateTypeComponent } from "./formly/template.type";
 import { FormlyValidators } from "./formly/validators";
+import { StepperTypeComponent } from "./formly/stepper.type";
+import { TabsetTypeComponent } from "./formly/tabset.type";
+import { TagsTypeComponent } from "./formly/tags.type";
+import { ChipsTypeComponent } from "./formly/chips.type";
+import { NgselectTypeComponent } from "./formly/ng-select.type";
+import { QuillTypeComponent } from "./formly/quill.type";
+import { ColorpickerTypeComponent } from "./formly/colorpicker.type";
+import { LeafletTypeComponent } from "./formly/leaflet.type";
+import { DatatableTypeComponent } from "./formly/datatable.type";
+import { CrudTableTypeComponent } from "./formly/crud-table.type";
+import { TreeTypeComponent } from "./formly/tree";
+import { DatetimeTypeComponent } from "./formly/datetimepicker.type";
 // wrappers
-import { FormlyWrapperComponent } from "./formly/formly.wrapper";
+import { FormGroupWrapperComponent } from "./formly/form-group.wrapper";
+import { FieldsetWrapperComponent } from "./formly/fieldset.wrapper";
 // utils
 import { SafePipe } from "./util/safe.pipe";
-import { StepperTypeComponent } from "./formly/stepper.type";
 
 @NgModule({
   imports: [
     // + shared module,
     SharedModule,
+    // + ng-select
+    NgSelectModule,
+    // + ngx-color-picker
+    ColorPickerModule,
     // + material
     A11yModule,
     ClipboardModule,
@@ -119,7 +141,7 @@ import { StepperTypeComponent } from "./formly/stepper.type";
     ScrollingModule,
     // + ngx-formly
     ReactiveFormsModule,
-    FormlyMaterialModule,
+    FormlyBootstrapModule,
     FormlyModule.forRoot({
       extras: { lazyRender: true },
       validators: [{ name: "ip", validation: FormlyValidators.IpValidator }],
@@ -137,7 +159,10 @@ import { StepperTypeComponent } from "./formly/stepper.type";
         { name: "max", message: FormlyValidators.maxValidationMessage },
         { name: "ip", message: FormlyValidators.IpValidatorMessage },
       ],
-      wrappers: [{ name: "wrapper", component: FormlyWrapperComponent }],
+      wrappers: [
+        { name: "fieldset", component: FieldsetWrapperComponent },
+        { name: "form-group", component: FormGroupWrapperComponent },
+      ],
       types: [
         { name: "template", component: TemplateTypeComponent },
         { name: "button", component: ButtonTypeComponent },
@@ -146,10 +171,44 @@ import { StepperTypeComponent } from "./formly/stepper.type";
         { name: "card", component: CardTypeComponent },
         { name: "accordion", component: AccordionTypeComponent },
         { name: "tabs", component: TabsTypeComponent },
+        { name: "tabset", component: TabsetTypeComponent },
         { name: "file-upload", component: FileUploadTypeComponent },
         { name: "repeat", component: RepeatTypeComponent },
         { name: "stepper", component: StepperTypeComponent },
+        { name: "tags", component: TagsTypeComponent },
+        { name: "quill", component: QuillTypeComponent },
+        { name: "ng-select", component: NgselectTypeComponent },
+        { name: "chips", component: ChipsTypeComponent },
+        { name: "color", component: ColorpickerTypeComponent },
+        { name: "map-marker", component: LeafletTypeComponent },
+        { name: "datatable", component: DatatableTypeComponent },
+        { name: "crud-table", component: CrudTableTypeComponent },
+        { name: "tree", component: TreeTypeComponent },
+        { name: "datetime", component: DatetimeTypeComponent },
       ],
+    }),
+    // + ngx-quill
+    QuillModule.forRoot({
+      modules: {
+        toolbar: [
+          ["bold", "italic", "underline", "strike"], // toggled buttons
+          ["blockquote", "code-block"],
+
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "sub" }, { script: "super" }], // superscript/subscript
+          [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+          [{ font: [] }],
+          [{ align: [] }],
+
+          ["clean"], // remove formatting button
+
+          ["link", "image", "video"], // link and image, video
+        ],
+      },
     }),
   ],
   exports: [
@@ -202,7 +261,7 @@ import { StepperTypeComponent } from "./formly/stepper.type";
     ScrollingModule,
     // + formly
     FormlyModule,
-    FormlyMaterialModule,
+    FormlyBootstrapModule,
   ],
   declarations: [
     SafePipe,
@@ -217,8 +276,20 @@ import { StepperTypeComponent } from "./formly/stepper.type";
     AccordionTypeComponent,
     FileUploadTypeComponent,
     TabsTypeComponent,
+    TabsetTypeComponent,
+    TagsTypeComponent,
+    NgselectTypeComponent,
     StepperTypeComponent,
-    FormlyWrapperComponent,
+    ChipsTypeComponent,
+    QuillTypeComponent,
+    FieldsetWrapperComponent,
+    FormGroupWrapperComponent,
+    ColorpickerTypeComponent,
+    LeafletTypeComponent,
+    DatatableTypeComponent,
+    CrudTableTypeComponent,
+    TreeTypeComponent,
+    DatetimeTypeComponent,
   ],
   providers: [SafePipe],
 })

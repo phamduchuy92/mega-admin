@@ -4,9 +4,9 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
 
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
-import { Authority } from "./config/authority.constants";
-import { LoginComponent } from "./login/login.component";
+import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
 import { UserRouteAccessService } from "./core/auth/user-route-access.service";
+import { Authority } from "./config/authority.constants";
 
 const routes: Routes = [
   {
@@ -20,51 +20,47 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        loadChildren:
-          "./layouts/admin-layout/admin-layout.module#AdminLayoutModule",
+        loadChildren: () =>
+          import("app/layouts/admin-layout/admin-layout.module").then(
+            (m) => m.AdminLayoutModule
+          ),
       },
     ],
   },
   {
-    path: "login",
-    component: LoginComponent,
+    path: "",
+    component: AuthLayoutComponent,
     children: [
       {
         path: "",
-        loadChildren:
-          "./login/login.module#LoginModule",
+        loadChildren: () =>
+          import("app/layouts/auth-layout/auth-layout.module").then(
+            (m) => m.AuthLayoutModule
+          ),
       },
     ],
   },
   {
-    path: "user-management",
+    path: "**",
+    redirectTo: "dashboard",
+  },
+  {
+    path: 'user-management',
     component: AdminLayoutComponent,
     data: {
       authorities: [Authority.ADMIN],
     },
     canActivate: [UserRouteAccessService],
-    children: [
-      {
-        path: "",
-        loadChildren:
-          "./user-management/user-management.module#UserManagementModule",
-      },
-    ],
+    loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule)
   },
   {
-    path: "ecommerce",
+    path: 'data',
     component: AdminLayoutComponent,
     data: {
-      authorities: [Authority.ADMIN],
+      authorities: [Authority.USER],
     },
     canActivate: [UserRouteAccessService],
-    children: [
-      {
-        path: "",
-        loadChildren:
-          "./ecommerce/ecommerce.module#EcommerceModule",
-      },
-    ],
+    loadChildren: () => import('./data/data.module').then(m => m.DataModule)
   },
 ];
 
@@ -73,7 +69,7 @@ const routes: Routes = [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes, {
-      useHash: false,
+      useHash: true,
     }),
   ],
   exports: [],

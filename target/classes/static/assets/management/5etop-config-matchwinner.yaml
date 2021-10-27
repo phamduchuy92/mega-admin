@@ -1,0 +1,13 @@
+title: Config Matchwinner
+apiEndpoint: /api/consul/config
+queryParams:
+  key: config/5etop-sports-matchwinner/data
+fields:
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: money_bet
+        type: input
+        className: col-md-3
+        templateOptions:
+          label: Money Bet
+          type: number

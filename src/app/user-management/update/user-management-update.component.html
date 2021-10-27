@@ -1,5 +1,5 @@
-<div class="main-content row justify-content-center">
-  <div class="container-fluid col-8">
+<div class="row justify-content-center">
+  <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">Create or edit a User</h2>
 
@@ -117,9 +117,8 @@
               id="activated"
               name="activated"
               formControlName="activated"
-              style="width: auto; height: auto; opacity: 1;"
             />
-            <span jhiTranslate="userManagement.activated" style="position: relative;">Activated</span>
+            <span jhiTranslate="userManagement.activated">Activated</span>
           </label>
         </div>
 

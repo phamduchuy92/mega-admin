@@ -3,12 +3,12 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { map } from "rxjs/operators";
 
-import { DataService } from "app/misc/model/data.service";
+import { EntityService } from "app//misc/model/entity.service";
 import * as _ from "lodash";
 import { Title } from "@angular/platform-browser";
 import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
-import { AlertService } from "app/core/util/alert.service";
+import { AlertService } from "app//core/util/alert.service";
 
 @Component({
   selector: "jhi-data-update",
@@ -17,7 +17,7 @@ import { AlertService } from "app/core/util/alert.service";
 export class DataUpdateComponent implements OnInit {
   _ = _;
   // state
-  isLoading = false;
+  isReady = false;
   isSaving = false;
   // config
   service = "";
@@ -35,14 +35,12 @@ export class DataUpdateComponent implements OnInit {
   };
 
   constructor(
-    private dataService: DataService,
+    private dataService: EntityService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
-    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.activatedRoute.data
       .pipe(
         map(({ config, model }) => {
@@ -72,7 +70,7 @@ export class DataUpdateComponent implements OnInit {
           this.fields = _.get(config, "config.fields", []);
         })
       )
-      .subscribe(() => (this.isLoading = false));
+      .subscribe(() => (this.isReady = true));
   }
 
   previousState(): void {

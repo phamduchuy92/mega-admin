@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { FieldType, FormlyFieldConfig } from '@ngx-formly/core';
+import { Component } from "@angular/core";
+import { FieldType, FormlyFieldConfig } from "@ngx-formly/core";
 
 @Component({
-  selector: 'jhi-formly-tabs',
+  selector: "jhi-formly-tabs",
   template: `
     <mat-tab-group>
       <mat-tab
@@ -21,6 +21,6 @@ export class TabsTypeComponent extends FieldType {
       return field.formControl!.disabled ? true : field.formControl!.valid;
     }
 
-    return field.fieldGroup!.every(f => this.isValid(f));
+    return field.fieldGroup!.every((f) => this.isValid(f));
   }
 }

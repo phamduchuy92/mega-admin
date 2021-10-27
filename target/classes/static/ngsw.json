@@ -1,0 +1,147 @@
+{
+  "configVersion": 1,
+  "timestamp": 1633241822932,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/10.7e6d91a4b3d8a7d4df2a.js",
+        "/11.f7fce2737587117f9435.js",
+        "/12.c576161034c8aeb22cb2.js",
+        "/13.637f79d994b3195c57c1.js",
+        "/14.3530668ef8e198d1c50e.js",
+        "/15.990b49afe0475cd77d93.js",
+        "/16.588945ac4fbabb4d887e.js",
+        "/17.6f309e4a3a4fd6c7bf07.js",
+        "/2.1de0f17e856acddb7cc4.js",
+        "/6.fb4eb16d6d1369cbe164.js",
+        "/7.16923c6c996d4223f26e.js",
+        "/8.946b0d6a1ae93a637de3.js",
+        "/9.0b78aa7dfd5c3c35a6f0.js",
+        "/common.3041b605ef8388f0b11a.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.fa9e3edc397b79467179.js",
+        "/manifest.webapp",
+        "/polyfills.943d450929e251632903.js",
+        "/runtime.13a7cf604ff68aabb1ad.js",
+        "/styles.0f0aae8ef0fa1b2e8d3a.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/bcmdd_logo3.8ba5212a2eac2c7c154a.png",
+        "/content/css/loading.css",
+        "/content/images/jhipster_family_member_0.svg",
+        "/content/images/jhipster_family_member_0_head-192.png",
+        "/content/images/jhipster_family_member_0_head-256.png",
+        "/content/images/jhipster_family_member_0_head-384.png",
+        "/content/images/jhipster_family_member_0_head-512.png",
+        "/content/images/jhipster_family_member_1.svg",
+        "/content/images/jhipster_family_member_1_head-192.png",
+        "/content/images/jhipster_family_member_1_head-256.png",
+        "/content/images/jhipster_family_member_1_head-384.png",
+        "/content/images/jhipster_family_member_1_head-512.png",
+        "/content/images/jhipster_family_member_2.svg",
+        "/content/images/jhipster_family_member_2_head-192.png",
+        "/content/images/jhipster_family_member_2_head-256.png",
+        "/content/images/jhipster_family_member_2_head-384.png",
+        "/content/images/jhipster_family_member_2_head-512.png",
+        "/content/images/jhipster_family_member_3.svg",
+        "/content/images/jhipster_family_member_3_head-192.png",
+        "/content/images/jhipster_family_member_3_head-256.png",
+        "/content/images/jhipster_family_member_3_head-384.png",
+        "/content/images/jhipster_family_member_3_head-512.png",
+        "/content/images/logo-jhipster.png",
+        "/content/scss/_bootstrap-variables.scss",
+        "/content/scss/global.scss",
+        "/content/scss/vendor.scss",
+        "/jhipster_family_member_0.c0285e5e9ebdce9056be.svg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/10.7e6d91a4b3d8a7d4df2a.js": "fe625dbeb7c8f3185036453bb93791645bd7c344",
+    "/11.f7fce2737587117f9435.js": "f68e841da9ab8e4adeb9abb8a9241c75208d34b6",
+    "/12.c576161034c8aeb22cb2.js": "e9f711033f25e8885cc69048221ea39ed38a164d",
+    "/13.637f79d994b3195c57c1.js": "6e41f66c2566c40632fe0b9051107046d0c28fe2",
+    "/14.3530668ef8e198d1c50e.js": "dd1359f7a58a5f3da21a49ce6c65ceb90c78d166",
+    "/15.990b49afe0475cd77d93.js": "0ff89cdc175874cf4b40d0fc5d07a6de5a17d1bd",
+    "/16.588945ac4fbabb4d887e.js": "2940ba0691e57fabe7d25ba84b87fe62bfa458b5",
+    "/17.6f309e4a3a4fd6c7bf07.js": "0e2a8720cb090489d7186b49f5c62c214fd0b0cd",
+    "/2.1de0f17e856acddb7cc4.js": "62f8508a430491095b884fcb5560460d9bdf491f",
+    "/6.fb4eb16d6d1369cbe164.js": "7ea09eabaf5041c670f3cbfcd87cf103ec960281",
+    "/7.16923c6c996d4223f26e.js": "033ab2d56800d630a11fdcc8934050dd58e4dce5",
+    "/8.946b0d6a1ae93a637de3.js": "9497ce4595c0193e9a8d00d9971c0da987f0cbba",
+    "/9.0b78aa7dfd5c3c35a6f0.js": "f901e7f955a3490cda4b7d483887c2e4e9a00cf3",
+    "/bcmdd_logo3.8ba5212a2eac2c7c154a.png": "1794247890beab4403071c69f39ab8d6fa7dced5",
+    "/common.3041b605ef8388f0b11a.js": "73fe65363a0bef280cab124c2cc3ef354154840c",
+    "/content/css/loading.css": "8e902af1febab13fdf7a2e585611a68b59c6fd40",
+    "/content/images/jhipster_family_member_0.svg": "d74ed3591e3a916224096cef4f87dc3bd7479386",
+    "/content/images/jhipster_family_member_0_head-192.png": "df480d17864835a76db4abd997176e13cfa38d2c",
+    "/content/images/jhipster_family_member_0_head-256.png": "ec1cd28328e885231c2d9a451cc46a8d4f10d6f4",
+    "/content/images/jhipster_family_member_0_head-384.png": "55c081b847a19807b34b48e31e63a464a2726d4e",
+    "/content/images/jhipster_family_member_0_head-512.png": "6cf7f74775338ab98de40ef589c68337fe8e859c",
+    "/content/images/jhipster_family_member_1.svg": "61a207bca2c8b0dac21fc945d2f2505e4b5d3a30",
+    "/content/images/jhipster_family_member_1_head-192.png": "ba95a15a915e98e756f8c0f6202cbb7146913d7a",
+    "/content/images/jhipster_family_member_1_head-256.png": "ae556422471b55c075155b881fa3d5ee646f968a",
+    "/content/images/jhipster_family_member_1_head-384.png": "0270ae0a742ebc7eaef16840d708a06663723204",
+    "/content/images/jhipster_family_member_1_head-512.png": "a432afd937aae212f7a5ea3b0285bd74b7358812",
+    "/content/images/jhipster_family_member_2.svg": "4b05e0217c9e27910087f76aa24a5699f7a3a30e",
+    "/content/images/jhipster_family_member_2_head-192.png": "7daaed3c0c953917ad905857627dbfc6466856af",
+    "/content/images/jhipster_family_member_2_head-256.png": "67f06e7a90ac379846940f1332d9d10398c49ae5",
+    "/content/images/jhipster_family_member_2_head-384.png": "7a0f8b1cc27ec81ce80bc1903f6faa2dab5524d9",
+    "/content/images/jhipster_family_member_2_head-512.png": "ee068745494bc8e72479d25287f2f80934f38c6d",
+    "/content/images/jhipster_family_member_3.svg": "0690f4141a25d739ed9429b0b315cc94196a3644",
+    "/content/images/jhipster_family_member_3_head-192.png": "58b5043c79afe05573cd8c3f7c23cc84c96ca362",
+    "/content/images/jhipster_family_member_3_head-256.png": "ee0fd7e4d2c0882650575bbaca55dee69dcaa064",
+    "/content/images/jhipster_family_member_3_head-384.png": "cf311c64f4d6762559ab3063521524f736f0975a",
+    "/content/images/jhipster_family_member_3_head-512.png": "97e81d97579be35f112fa057028887fbb80f962c",
+    "/content/images/logo-jhipster.png": "e1e46028ec092ca351425b07707fcdd52146b0b3",
+    "/content/scss/_bootstrap-variables.scss": "b04e9e57bcc49104ec926520b8f5b7ddce16c830",
+    "/content/scss/global.scss": "003bbaebfe9b5ed6cf17efea73b37aebae9eb0c8",
+    "/content/scss/vendor.scss": "a2fbbbe3bdd3f836672a5f2e4a20a48326c66d8d",
+    "/favicon.ico": "2e9b741a36047101e3d85fcece44fb67f1902b82",
+    "/index.html": "6c9c107eb4570863e39c82f6b6e3b69d9a8fb59f",
+    "/jhipster_family_member_0.c0285e5e9ebdce9056be.svg": "d74ed3591e3a916224096cef4f87dc3bd7479386",
+    "/main.fa9e3edc397b79467179.js": "13a0c3abbc4b1c80a78a948da0b05d33a49d479b",
+    "/manifest.webapp": "148a06e012ad1d908f7f7a6612a97293b5c285c2",
+    "/polyfills.943d450929e251632903.js": "3168953790fa0e28ded48e9b5b4135163a0b1939",
+    "/runtime.13a7cf604ff68aabb1ad.js": "406da3f7e2a4dd6135c4c69965030cf1a8156a59",
+    "/styles.0f0aae8ef0fa1b2e8d3a.css": "53ffd3553cde6fad2d949ec1f51aeacac21665ec"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

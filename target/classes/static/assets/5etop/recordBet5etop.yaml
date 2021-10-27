@@ -1,0 +1,234 @@
+framework: nestjs
+img: /assets/logo/dota2_logo.png
+title:
+  index: Record Bet 5etop
+  view: View Record
+  update: Update Record
+  create: New Record
+  delete: Delete Record
+apiEndpoint: /services/5etop/api/recordBet5etop
+predicate: createdAt
+ascending: false
+queryParams:
+columns:
+  - property: league
+    label: League
+    sortBy: league
+    searchBy: league
+  - property: left
+    label: Team Left
+    sortBy: left
+    searchBy: left
+  - property: right
+    label: Team Right
+    sortBy: right
+    searchBy: right
+  - property: infoBet
+    label: Info Bet
+    sortBy: infoBet
+    searchBy: infoBet
+  - property: col1
+    label: Col1
+    sortBy: col1
+    searchBy: col1
+  - property: col2
+    label: Col2
+    sortBy: col2
+    searchBy: col2
+  - property: rateBet_col1
+    label: Rate Col1
+    sortBy: rateBet_col1
+    searchBy: rateBet_col1
+  - property: rateBet_col2
+    label: Rate Col2
+    sortBy: rateBet_col2
+    searchBy: rateBet_col2
+  - property: status
+    label: Status
+    sortBy: status
+    searchBy: status
+    options:
+      - label: PREPARE
+        value: PREPARE
+      - label: READY
+        value: READY
+      - label: SETTLED
+        value: SETTLED
+      - label: UNSUITABLE
+        value: UNSUITABLE
+  - property: amount
+    label: Amount
+    sortBy: amount
+    searchBy: amount
+  - property: choice
+    label: Choice
+    sortBy: choice
+    searchBy: choice
+  - property: probability
+    label: Probability
+    sortBy: probability
+    searchBy: probability
+  - property: rate_lived
+    label: Rate Lived
+    sortBy: rate_lived
+    searchBy: rate_lived
+  - property: rate_vpgame
+    label: Rate Vpgame
+    sortBy: rate_vpgame
+    searchBy: rate_vpgame
+  - property: bet_profit
+    label: Bet Profit
+    sortBy: bet_profit
+    searchBy: bet_profit
+  - property: lived_profit
+    label: Lived Profit
+    sortBy: lived_profit
+    searchBy: lived_profit
+  - property: difference
+    label: Difference
+    sortBy: difference
+    searchBy: difference
+  - property: money_top10
+    label: Money Top10
+    sortBy: money_top10
+    searchBy: money_top10
+  - property: expected_profit
+    label: Expected Profit
+    sortBy: expected_profit
+    searchBy: expected_profit
+  - property: lastModified
+    label: Last Modified
+    sortBy: lastModified
+    searchBy: lastModified
+fields:
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: league
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: League
+      - key: left
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Team Left
+      - key: right
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Team Right
+      - key: infoBet
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Info Bet
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: col1
+        type: input
+        className: col-md-3
+        templateOptions:
+          type: number
+          label: Col1
+      - key: col2
+        type: input
+        className: col-md-3
+        templateOptions:
+          type: number
+          label: Col2
+      - key: type
+        type: select
+        className: col-md-3
+        templateOptions:
+          label: Type
+          options:
+            - label: FOOTBALL
+              value: FOOTBALL
+            - label: BASKETBALL
+              value: BASKETBALL
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: status
+        type: select
+        className: col-md-3
+        templateOptions:
+          label: Status
+          options:
+            - label: PREPARE
+              value: PREPARE
+            - label: READY
+              value: READY
+            - label: SETTLED
+              value: SETTLED
+            - label: UNSUITABLE
+              value: UNSUITABLE
+      - key: amount
+        type: input
+        className: col-md-3
+        templateOptions:
+          type: number
+          disabled: true
+          label: Amount
+      - key: choice
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Choice
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: probability
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Probability
+      - key: rate_lived
+        type: input
+        className: col-md-3
+        templateOptions:
+          type: number
+          label: Rate Lived
+      - key: rate_vpgame
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Rate Vpgame
+      - key: bet_profit
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Bet Profit
+      - key: lived_profit
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Lived Profit
+      - key: difference
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Difference
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: money_top10
+        type: input
+        className: col-md-3
+        templateOptions:
+          type: number
+          label: Money Top10
+      - key: expected_profit
+        type: input
+        className: col-md-3
+        templateOptions:
+          disabled: true
+          label: Expected Profit

@@ -11,14 +11,14 @@ import { UserManagementService } from '../service/user-management.service';
 export class UserManagementDeleteDialogComponent {
   user?: User;
 
-  constructor(private userService: UserManagementService, public activeModal: NgbActiveModal) {}
+  constructor(private userService: UserManagementService, private activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: number): void {
-    this.userService.delete(id).subscribe(() => {
+  confirmDelete(login: string): void {
+    this.userService.delete(login).subscribe(() => {
       this.activeModal.close('deleted');
     });
   }

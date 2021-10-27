@@ -1,17 +1,22 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ApplicationConfigService {
-  private endpointPrefix = "";
-
-  constructor(private httpClient: HttpClient) {}
+  private endpointPrefix = '';
+  private microfrontend = false;
 
   setEndpointPrefix(endpointPrefix: string): void {
     this.endpointPrefix = endpointPrefix;
+  }
+
+  setMicrofrontend(microfrontend = true): void {
+    this.microfrontend = microfrontend;
+  }
+
+  isMicrofrontend(): boolean {
+    return this.microfrontend;
   }
 
   getEndpointFor(api: string, microservice?: string): string {
@@ -19,12 +24,5 @@ export class ApplicationConfigService {
       return `${this.endpointPrefix}services/${microservice}/${api}`;
     }
     return `${this.endpointPrefix}${api}`;
-  }
-
-  getConfigFor(microservice: string): Observable<any> {
-    return this.httpClient.get(`/assets/services/${microservice}.yaml`, {
-      responseType: "text",
-      observe: "response",
-    });
   }
 }

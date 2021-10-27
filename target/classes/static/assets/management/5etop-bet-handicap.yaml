@@ -1,0 +1,98 @@
+title: Auto Bet Handicap
+fields:
+  - key: status
+    type: template
+    expressionProperties:
+      templateOptions.innerHTML: '_.get(model, "status.status") == 200 && _.map(model.status.body, e => _.template(''<p class="my-3 alert alert-success">${ _id }: ${ status }</pre>'')(e))'
+    templateOptions:
+      apiEndpoint: /services/5etop-sports-handicap/api/sportsHandicap
+      innerHTML:
+  - type: stepper
+    fieldGroup:
+      - templateOptions:
+          label: Login
+        fieldGroup:
+          - key: user
+            type: input
+            templateOptions:
+              label: User
+              disabled: true
+          - key: account
+            type: select
+            expressionProperties:
+              templateOptions.disabled: '_.get(model, "login.status") >= 200 && _.get(model, "login.status") < 300'
+            templateOptions:
+              label: Account
+              required: true
+              options:
+                - label: pepsicogaz
+                  value: pepsicogaz
+                - label: pepsicogaz11
+                  value: pepsicogaz11
+                - label: pepsicogaz22
+                  value: pepsicogaz22
+                - label: phamduchuy92
+                  value: phamduchuy92
+          - key: password
+            type: input
+            expressionProperties:
+              templateOptions.disabled: '_.get(model, "login.status") >= 200 && _.get(model, "login.status") < 300'
+            templateOptions:
+              label: Password
+              required: true
+          - fieldGroupClassName: btn-group my-3
+            fieldGroup:
+              - key: login
+                type: button
+                expressionProperties:
+                  templateOptions.params.user: 'model.user'
+                  templateOptions.params.account: 'model.account'
+                  templateOptions.params.password: 'model.password'
+                  templateOptions.disabled: '_.get(model, "sendcode.status") == 202 || _.get(model, "login.status") == 202'
+                templateOptions:
+                  label: Login
+                  icon: sign-in-alt
+                  apiEndpoint: /services/5etop-sports-handicap/api/sportsHandicap/login
+                  params:
+                    user:
+                    account:
+                    password:
+              - key: close
+                type: button
+                expressionProperties:
+                  templateOptions.disabled: '!model.account'
+                  templateOptions.params.user: 'model.user'
+                  templateOptions.params.account: 'model.account'
+                templateOptions:
+                  label: Close
+                  icon: broom
+                  btnType: outline-danger
+                  apiEndpoint: /services/5etop-sports-handicap/api/sportsHandicap/close
+                  params:
+                    user:
+                    account:
+      - templateOptions:
+          label: Verification
+        fieldGroup:
+          - key: code
+            type: input
+            templateOptions:
+              label: Code Steam
+              required: true
+          - fieldGroupClassName: btn-group my-3
+            fieldGroup:
+              - key: sendcode
+                type: button
+                expressionProperties:
+                  templateOptions.params.user: 'model.user'
+                  templateOptions.params.account: 'model.account'
+                  templateOptions.params.code: 'model.code'
+                  templateOptions.disabled: '_.get(model, "sendcode.status") == 202 || _.get(model, "login.status") == 202'
+                templateOptions:
+                  label: Send code
+                  icon: shield-alt
+                  apiEndpoint: /services/5etop-sports-handicap/api/sportsHandicap/sendcode
+                  params:
+                    user:
+                    account:
+                    code:

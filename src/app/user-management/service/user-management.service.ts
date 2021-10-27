@@ -9,7 +9,7 @@ import { IUser } from '../user-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserManagementService {
-  public resourceUrl = this.applicationConfigService.getEndpointFor('api/users', 'admin-mgmt');
+  private resourceUrl = this.applicationConfigService.getEndpointFor('api/admin/users');
 
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
@@ -21,8 +21,8 @@ export class UserManagementService {
     return this.http.put<IUser>(this.resourceUrl, user);
   }
 
-  find(id: number): Observable<IUser> {
-    return this.http.get<IUser>(`${this.resourceUrl}/${id}`);
+  find(login: string): Observable<IUser> {
+    return this.http.get<IUser>(`${this.resourceUrl}/${login}`);
   }
 
   query(req?: Pagination): Observable<HttpResponse<IUser[]>> {
@@ -30,11 +30,11 @@ export class UserManagementService {
     return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: number): Observable<{}> {
-    return this.http.delete(`${this.resourceUrl}/${id}`);
+  delete(login: string): Observable<{}> {
+    return this.http.delete(`${this.resourceUrl}/${login}`);
   }
 
   authorities(): Observable<string[]> {
-    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities', 'admin-mgmt'));
+    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
   }
 }

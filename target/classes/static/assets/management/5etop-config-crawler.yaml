@@ -1,0 +1,14 @@
+title: Config Crawler
+apiEndpoint: /api/consul/config
+queryParams:
+  key: config/dota2-crawler/data
+fields:
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: cookie_5etop
+        type: textarea
+        className: col-md-12
+        templateOptions:
+          label: Cookie 5etop
+          description: Cookie authentication for 5etop
+          rows: 5

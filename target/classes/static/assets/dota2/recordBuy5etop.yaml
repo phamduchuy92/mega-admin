@@ -1,0 +1,101 @@
+framework: nestjs
+img: /assets/logo/dota2_logo.png
+title:
+  index: Record Buy 5etop
+  view: View Record [${ item.name }]
+  update: Update Record [${ item.name }]
+  create: New Record
+  delete: Delete Record [${ item.name }]
+apiEndpoint: /services/dota2/api/recordBuy5etop
+predicate: createdAt
+ascending: false
+queryParams:
+columns:
+  - property: item
+    label: Item
+    sortBy: item
+    searchBy: item
+  - property: buy
+    label: Buy
+    sortBy: buy
+    searchBy: buy
+  - property: quantity
+    label: Quantity
+    sortBy: quantity
+    searchBy: quantity
+  - property: percent
+    label: Percent
+    sortBy: percent
+    searchBy: percent
+  - property: sell_predict
+    label: Sell Predict
+    sortBy: sell_predict
+    searchBy: sell_predict
+  - property: sell_real
+    label: Sell Price Min
+    sortBy: sell_real
+    searchBy: sell_real
+  - property: status
+    label: Status
+    sortBy: status
+    searchBy: status
+    options:
+      - label: WITHDRAW
+        value: WITHDRAW
+      - label: SELLING
+        value: SELLING
+      - label: SOLD
+        value: SOLD
+  - property: lastModified
+    label: Last Modified
+    sortBy: lastModified
+    searchBy: lastModified
+fields:
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: item
+        type: input
+        className: col-md-3
+        templateOptions:
+          label: Item
+      - key: buy
+        type: input
+        className: col-md-3
+        templateOptions:
+          label: Buy
+      - key: quantity
+        type: input
+        className: col-md-3
+        templateOptions:
+          label: Quantity
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: percent
+        type: input
+        className: col-md-3
+        templateOptions:
+          label: Percent
+      - key: sell_predict
+        type: input
+        className: col-md-3
+        templateOptions:
+          label: Sell Predict
+      - key: sell_real
+        type: input
+        className: col-md-3
+        templateOptions:
+          label: Sell Real
+  - fieldGroupClassName: row
+    fieldGroup:
+      - key: status
+        type: select
+        className: col-md-3
+        templateOptions:
+          label: Status
+          options:
+            - label: WITHDRAW
+              value: WITHDRAW
+            - label: SELLING
+              value: SELLING
+            - label: SOLD
+              value: SOLD

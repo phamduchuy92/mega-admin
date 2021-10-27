@@ -4,8 +4,8 @@ import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { filter, map, concatMap } from 'rxjs/operators';
 
-import { Authority } from 'app/config/authority.constants';
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { Authority } from 'app//config/authority.constants';
+import { UserRouteAccessService } from 'app//core/auth/user-route-access.service';
 
 import { DataComponent } from './data.component';
 import { DataDetailComponent } from './data-detail.component';
@@ -14,8 +14,8 @@ import { DataUpdateComponent } from './data-update.component';
 // custom
 import * as _ from 'lodash';
 import * as jsyaml from 'js-yaml';
-import { SERVER_API_URL, BUILD_TIMESTAMP } from 'app/app.constants';
-import { createRequestOption } from 'app/core/request/request-util';
+import { SERVER_API_URL, BUILD_TIMESTAMP } from 'app//app.constants';
+import { createRequestOption } from 'app//core/request/request-util';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigResolve implements Resolve<string> {
@@ -100,7 +100,6 @@ export const DATA_ROUTES: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'data.title'
     },
     canActivate: [UserRouteAccessService],
   },
@@ -113,7 +112,6 @@ export const DATA_ROUTES: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'data.title'
     },
     canActivate: [UserRouteAccessService],
   },
@@ -126,7 +124,6 @@ export const DATA_ROUTES: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'data.title'
     },
     canActivate: [UserRouteAccessService],
   },

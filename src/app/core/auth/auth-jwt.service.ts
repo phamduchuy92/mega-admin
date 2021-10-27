@@ -9,57 +9,45 @@ import { Login } from 'app/login/login.model';
 
 type JwtToken = {
   id_token: string;
-  login: string;
-  email: string;
 };
 
 @Injectable({ providedIn: 'root' })
 export class AuthServerProvider {
   constructor(
     private http: HttpClient,
-    private $localStorage: LocalStorageService,
-    private $sessionStorage: SessionStorageService,
+    private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService,
     private applicationConfigService: ApplicationConfigService
   ) {}
 
   getToken(): string {
-    const tokenInLocalStorage: string | null = this.$localStorage.retrieve('authenticationToken');
-    const tokenInSessionStorage: string | null = this.$sessionStorage.retrieve('authenticationToken');
+    const tokenInLocalStorage: string | null = this.localStorageService.retrieve('authenticationToken');
+    const tokenInSessionStorage: string | null = this.sessionStorageService.retrieve('authenticationToken');
     return tokenInLocalStorage ?? tokenInSessionStorage ?? '';
   }
 
   login(credentials: Login): Observable<void> {
     return this.http
-      .post<JwtToken>(this.applicationConfigService.getEndpointFor('api/authenticate', 'admin-mgmt'), credentials)
+      .post<JwtToken>(this.applicationConfigService.getEndpointFor('api/authenticate'), credentials)
       .pipe(map(response => this.authenticateSuccess(response, credentials.rememberMe)));
   }
 
   logout(): Observable<void> {
     return new Observable(observer => {
-      this.$localStorage.clear('authenticationToken');
-      this.$sessionStorage.clear('authenticationToken');
+      this.localStorageService.clear('authenticationToken');
+      this.sessionStorageService.clear('authenticationToken');
       observer.complete();
     });
   }
 
   private authenticateSuccess(response: JwtToken, rememberMe: boolean): void {
     const jwt = response.id_token;
-    const login = response.login;
-    const email = response.email;
     if (rememberMe) {
-      this.$localStorage.store('authenticationToken', jwt);
-      this.$sessionStorage.clear('authenticationToken');
-      this.$localStorage.store('login', login);
-      this.$sessionStorage.clear('login');
-      this.$localStorage.store('email', email);
-      this.$sessionStorage.clear('email');
+      this.localStorageService.store('authenticationToken', jwt);
+      this.sessionStorageService.clear('authenticationToken');
     } else {
-      this.$sessionStorage.store('authenticationToken', jwt);
-      this.$localStorage.clear('authenticationToken');
-      this.$sessionStorage.store('login', login);
-      this.$localStorage.clear('login');
-      this.$sessionStorage.store('email', email);
-      this.$localStorage.clear('email');
+      this.sessionStorageService.store('authenticationToken', jwt);
+      this.localStorageService.clear('authenticationToken');
     }
   }
 }

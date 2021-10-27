@@ -1,56 +1,107 @@
-import { Component, OnInit } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { filter } from 'rxjs/operators';
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/core/request/request-util';
-import { plainToFlattenObject } from 'app/misc/util/request-util';
-import * as _ from 'lodash';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { FieldType } from "@ngx-formly/core";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { filter, map } from "rxjs/operators";
+import { SERVER_API_URL } from "app//app.constants";
+import { createRequestOption } from "app//core/request/request-util";
+import { plainToFlattenObject } from "app//misc/util/request-util";
+import * as _ from "lodash";
+import { Observable } from "rxjs";
 
 @Component({
-  selector: 'jhi-formly-template',
-  template: ` <div [innerHTML]="to.innerHTML"></div> `,
+  selector: "jhi-formly-template",
+  template: ` <div [innerHTML]="to.innerHTML" [ngClass]="to.className"></div> `,
 })
 export class TemplateTypeComponent extends FieldType implements OnInit {
-  constructor(private httpClient: HttpClient) {
+  defaultOptions = {
+    wrappers: ["form-group"],
+  };
+
+  constructor(protected httpClient: HttpClient) {
     super();
   }
 
   ngOnInit(): void {
     if (this.to.apiEndpoint) {
-      this.createRequest()
-        .pipe(filter(res => res.ok))
-        .subscribe(
-          res => this.onSuccess(res),
-          err => this.onError(err)
-        );
+      this.loadRemote().subscribe((res) => {
+        if (this.to.htmlFunc) {
+          if (_.isFunction(this.to.htmlFunc)) {
+            this.to.innerHTML = this.to.htmlFunc(res);
+          } else if (_.isString(this.to.htmlFunc)) {
+            this.to.innerHTML = _.template(this.to.htmlFunc)(res);
+          }
+        } else {
+          this.to.innerHTML = res;
+        }
+        if (this.to.store) {
+          this.options.formState[this.to.store] = res;
+        }
+      });
     }
   }
 
-  createRequest(): Observable<HttpResponse<any>> {
-    const params = createRequestOption(_.omitBy(plainToFlattenObject(this.to.params), _.isNull));
-    const body = _.omitBy(this.to.body, _.isNull);
+  loadRemote(): Observable<any> {
+    return !this.to.isText
+      ? this.loadRemoteApi().pipe(
+          filter((res) => res.ok),
+          map((res) => res.body)
+        )
+      : this.loadRemoteText().pipe(
+          filter((res) => res.ok),
+          map((res) => res.body)
+        );
+  }
+
+  loadRemoteText(): Observable<HttpResponse<any>> {
+    const query = _.assign({}, this.to.params);
+    const body = _.assign({}, this.to.body);
     if (_.isEmpty(body)) {
-      return this.httpClient.get(SERVER_API_URL + _.toString(this.to.apiEndpoint), {
-        params,
-        responseType: this.to.responseType ? this.to.responseType : 'json',
-        observe: 'response',
+      return this.httpClient.get(SERVER_API_URL + this.to.apiEndpoint, {
+        params: createRequestOption(
+          _.omitBy(plainToFlattenObject(query), _.isNull)
+        ),
+        observe: "response",
+        responseType: "text",
       });
     } else {
-      return this.httpClient.post(SERVER_API_URL + _.toString(this.to.apiEndpoint), body, {
-        params,
-        responseType: this.to.responseType ? this.to.responseType : 'json',
-        observe: 'response',
-      });
+      return this.httpClient.post(
+        SERVER_API_URL + this.to.apiEndpoint,
+        _.omitBy(plainToFlattenObject(body), _.isNull),
+        {
+          params: createRequestOption(
+            _.omitBy(plainToFlattenObject(query), _.isNull)
+          ),
+          observe: "response",
+          responseType: "text",
+        }
+      );
     }
   }
 
-  private onSuccess(res: any): void {
-    this.form.get(_.toString(this.key))?.setValue(res);
-  }
-
-  private onError(err: HttpErrorResponse): void {
-    this.form.get(_.toString(this.key))?.setValue(err);
+  loadRemoteApi(): Observable<HttpResponse<any>> {
+    const query = _.assign({}, this.to.params);
+    const body = _.assign({}, this.to.body);
+    if (_.isEmpty(body)) {
+      return this.httpClient.get<HttpResponse<any>>(
+        SERVER_API_URL + this.to.apiEndpoint,
+        {
+          params: createRequestOption(
+            _.omitBy(plainToFlattenObject(query), _.isNull)
+          ),
+          observe: "response",
+        }
+      );
+    } else {
+      return this.httpClient.post<HttpResponse<any>>(
+        SERVER_API_URL + this.to.apiEndpoint,
+        _.omitBy(plainToFlattenObject(body), _.isNull),
+        {
+          params: createRequestOption(
+            _.omitBy(plainToFlattenObject(query), _.isNull)
+          ),
+          observe: "response",
+        }
+      );
+    }
   }
 }
