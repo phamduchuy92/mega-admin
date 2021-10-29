@@ -31,7 +31,6 @@ import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import { httpInterceptorProviders } from './core/interceptor/index';
 import { translatePartialLoader, missingTranslationHandler } from './config/translation.config';
-import { SERVER_API_URL } from './app.constants';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -88,14 +87,14 @@ export class AppModule {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);
-    // get all icons in pack
-    iconLibrary.addIconPacks(fas);
-    iconLibrary.addIconPacks(fab);
-    iconLibrary.addIconPacks(far);
     dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
     translateService.setDefaultLang('en');
     // if user have changed language and navigates away from the application and back to the application then use previously choosed language
     const langKey = sessionStorageService.retrieve('locale') ?? 'en';
     translateService.use(langKey);
+    // get all icons in pack
+    iconLibrary.addIconPacks(fas);
+    iconLibrary.addIconPacks(fab);
+    iconLibrary.addIconPacks(far);
   }
 }

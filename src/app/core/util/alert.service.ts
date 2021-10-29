@@ -84,6 +84,34 @@ export class AlertService {
     return alert;
   }
 
+  success(msg: string): Alert {
+    return this.addAlert({
+      type: 'success',
+      message: msg,
+    });
+  }
+
+  error(msg: string): Alert {
+    return this.addAlert({
+      type: 'danger',
+      message: msg,
+    });
+  }
+
+  warning(msg: string): Alert {
+    return this.addAlert({
+      type: 'warning',
+      message: msg,
+    });
+  }
+
+  info(msg: string): Alert {
+    return this.addAlert({
+      type: 'info',
+      message: msg,
+    });
+  }
+
   private closeAlert(alertId: number, extAlerts?: Alert[]): void {
     const alerts = extAlerts ?? this.alerts;
     const alertIndex = alerts.map(alert => alert.id).indexOf(alertId);

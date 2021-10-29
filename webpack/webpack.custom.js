@@ -7,7 +7,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackNotifierPlugin = require('webpack-notifier');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const environment = require('./environment');
 // const proxyConfig = require('./proxy.conf');
@@ -29,7 +29,7 @@ module.exports = async (config, options, targetOptions) => {
         __filename,
         path.resolve(__dirname, 'webpack.custom.js'),
         path.resolve(__dirname, '../angular.json'),
-        path.resolve(__dirname, '../tsconfig.app.json'),
+        // path.resolve(__dirname, '../tsconfig.app.json'),
         path.resolve(__dirname, '../tsconfig.json'),
       ],
     },
@@ -38,9 +38,9 @@ module.exports = async (config, options, targetOptions) => {
   // PLUGINS
   if (config.mode === 'development') {
     config.plugins.push(
-      // new ESLintPlugin({
-      //   extensions: ['js', 'ts'],
-      // }),
+      new ESLintPlugin({
+        // extensions: ['js', 'ts'],
+      }),
       new WebpackNotifierPlugin({
         title: 'Emi Agency',
         contentImage: path.join(__dirname, 'angular.png'),
@@ -53,6 +53,7 @@ module.exports = async (config, options, targetOptions) => {
   if (config.devServer) {
     // config.devServer.proxy = proxyConfig({ tls });
   }
+
   if (targetOptions.target === 'serve' || config.watch) {
     config.plugins.push(
       new BrowserSyncPlugin(

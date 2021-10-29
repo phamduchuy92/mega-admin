@@ -2,7 +2,7 @@ import { Component, ViewChild } from "@angular/core";
 import { FieldType } from "@ngx-formly/core";
 // + HttpClient
 import { HttpClient } from "@angular/common/http";
-import { SERVER_API_URL } from "app//app.constants";
+
 import * as _ from "lodash";
 
 @Component({

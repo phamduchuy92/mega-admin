@@ -14,7 +14,6 @@ import { DataUpdateComponent } from './data-update.component';
 // custom
 import * as _ from 'lodash';
 import * as jsyaml from 'js-yaml';
-import { SERVER_API_URL, BUILD_TIMESTAMP } from 'app//app.constants';
 import { createRequestOption } from 'app//core/request/request-util';
 
 @Injectable({ providedIn: 'root' })
@@ -26,7 +25,7 @@ export class ConfigResolve implements Resolve<string> {
     const property: string = _.get(route.params, 'property');
 
     return this.httpClient
-      .get(SERVER_API_URL + `assets/${service}/${property}.yaml?ts=${_.toString(BUILD_TIMESTAMP)}`, {
+      .get(SERVER_API_URL + `assets/${service}/${property}.yaml`, {
         responseType: 'text',
         observe: 'response',
       })
@@ -49,7 +48,7 @@ export class ModelResolve implements Resolve<any> {
 
     if (id) {
       return this.httpClient
-        .get(SERVER_API_URL + `assets/${service}/${property}.yaml?ts=${_.toString(BUILD_TIMESTAMP)}`, {
+        .get(SERVER_API_URL + `assets/${service}/${property}.yaml`, {
           responseType: 'text',
           observe: 'response',
         })

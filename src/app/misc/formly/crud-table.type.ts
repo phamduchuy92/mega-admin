@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 // + HTTP support
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { SERVER_API_URL } from "app//app.constants";
+
 import { createRequestOption } from "app//core/request/request-util";
 import { plainToFlattenObject } from "app//misc/util/request-util";
 // + ng-select

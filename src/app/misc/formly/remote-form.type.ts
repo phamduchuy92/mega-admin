@@ -5,7 +5,6 @@ import { filter, map } from 'rxjs/operators';
 // + HTTP support
 import { HttpClient } from '@angular/common/http';
 import { FieldType } from '@ngx-formly/core';
-import { BUILD_TIMESTAMP } from 'app//app.constants';
 // + look for anything
 import * as _ from 'lodash';
 import * as jsyaml from 'js-yaml';
@@ -30,7 +29,7 @@ export class RemoteFormTypeComponent extends FieldType implements OnInit {
 
   loadRemoteForm(): void {
     this.httpClient
-      .get(this.to.src + '?ts=' + BUILD_TIMESTAMP, { responseType: 'text', observe: 'response' })
+      .get(this.to.src, { responseType: 'text', observe: 'response' })
       .pipe(
         filter(res => res.ok),
         map(res => jsyaml.load(res.body || ''))

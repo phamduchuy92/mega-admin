@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FieldType } from "@ngx-formly/core";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { filter, map } from "rxjs/operators";
-import { SERVER_API_URL } from "app//app.constants";
+
 import { createRequestOption } from "app//core/request/request-util";
 import { plainToFlattenObject } from "app//misc/util/request-util";
 import * as _ from "lodash";

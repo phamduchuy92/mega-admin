@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { DATE_FORMAT } from 'app//config/input.constants';
 import { map } from 'rxjs/operators';
 
-import { SERVER_API_URL } from 'app//app.constants';
+
 
 type EntityResponseType = HttpResponse<any>;
 type EntityArrayResponseType = HttpResponse<any[]>;

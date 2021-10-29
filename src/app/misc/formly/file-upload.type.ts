@@ -5,7 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { filter, map } from "rxjs/operators";
 import * as _ from "lodash";
 import { SafePipe } from "../util/safe.pipe";
-import { SERVER_API_URL } from "app//app.constants";
+
 
 @Component({
   selector: "jhi-formly-file-upload",

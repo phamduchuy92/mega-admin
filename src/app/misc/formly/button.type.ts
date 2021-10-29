@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { createRequestOption } from 'app//core/request/request-util';
 import { plainToFlattenObject } from '../util/request-util';
-import { SERVER_API_URL } from 'app//app.constants';
+
 import { AlertService } from 'app//core/util/alert.service';
 
 @Component({
