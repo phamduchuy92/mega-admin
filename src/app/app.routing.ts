@@ -26,6 +26,10 @@ const routes: Routes = [
           ),
       },
     ],
+    data: {
+      authorities: [Authority.USER],
+    },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: "",
@@ -41,14 +45,11 @@ const routes: Routes = [
     ],
   },
   {
-    path: "**",
-    redirectTo: "dashboard",
-  },
-  {
     path: 'user-management',
     component: AdminLayoutComponent,
     data: {
       authorities: [Authority.ADMIN],
+      defaultSort: 'id,asc',
     },
     canActivate: [UserRouteAccessService],
     loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule)
@@ -58,6 +59,7 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     data: {
       authorities: [Authority.USER],
+      defaultSort: 'id,asc',
     },
     canActivate: [UserRouteAccessService],
     loadChildren: () => import('./data/data.module').then(m => m.DataModule)

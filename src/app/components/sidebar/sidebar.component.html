@@ -88,45 +88,45 @@
         </div>
       </form>
       <!-- Navigation -->
-      <ul class="navbar-nav">
+      <!-- <ul class="navbar-nav">
           <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
               <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
                   <i class="ni {{menuItem.icon}}"></i>
                   {{menuItem.title}}
               </a>
           </li>
+      </ul> -->
+      <!-- Divider -->
+      <hr class="my-3">
+      <!-- Heading -->
+      <h6 class="navbar-heading text-muted"><fa-icon icon="shopping-cart"></fa-icon>&nbsp; Thương Mại Điện Tử</h6>
+      <!-- Navigation -->
+      <ul class="navbar-nav mb-md-3 ml-md-1">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/data/product-mgmt/product-categories']">
+            <fa-icon icon="folder"></fa-icon>&nbsp; Danh Mục Sản Phẩm
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/data/product-mgmt/products']">
+            <fa-icon icon="cube"></fa-icon>&nbsp; Sản Phẩm
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" [routerLink]="['data','order-mgmt', 'orders']">
+            <fa-icon icon="list"></fa-icon>&nbsp; Đơn Hàng
+          </a>
+        </li> -->
       </ul>
       <!-- Divider -->
       <hr class="my-3">
       <!-- Heading -->
-      <h6 class="navbar-heading text-muted">Documentation</h6>
+      <h6 class="navbar-heading text-muted"><fa-icon icon="cogs"></fa-icon>&nbsp; Cài Đặt</h6>
       <!-- Navigation -->
-      <ul class="navbar-nav mb-md-3">
-        <li class="nav-item">
-          <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard-angular/documentation/tutorial">
-            <i class="ni ni-spaceship"></i> Getting started
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard-angular/documentation/colors">
-            <i class="ni ni-palette"></i> Foundation
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard-angular/documentation/alerts">
-            <i class="ni ni-ui-04"></i> Components
-          </a>
-        </li>
-      </ul>
-      <!-- Divider -->
-      <hr class="my-3">
-      <!-- Heading -->
-      <h6 class="navbar-heading text-muted">Cài Đặt</h6>
-      <!-- Navigation -->
-      <ul class="navbar-nav mb-md-3">
+      <ul class="navbar-nav mb-md-3 ml-md-1">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/user-management']">
-            <i class="ni ni-spaceship"></i> Getting started
+            <fa-icon icon="users"></fa-icon>&nbsp; Quản Lý Tài Khoản
           </a>
         </li>
       </ul>

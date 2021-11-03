@@ -1,0 +1,26 @@
+title:
+  index: Danh mục sản phẩm
+  view: Xem danh mục sản phẩm
+  update: Sửa danh mục sản phẩm
+  create: Tạo danh mục sản phẩm
+  delete: Xóa danh mục sản phẩm
+apiEndpoint: /services/product-mgmt/api/product-categories
+predicate: id
+ascending: true
+columns:
+  - property: name
+    label: Tên
+    sortBy: name
+    searchBy: name
+    pattern: ${term}
+fields:
+  - key: name
+    type: input
+    templateOptions:
+      required: true
+      label: Tên
+  - key: description
+    type: textarea
+    templateOptions:
+      rows: 3
+      label: Mô tả

@@ -1,23 +1,21 @@
-<div class="main-content">
-  <div class="container-fluid">
-    <div class="row justify-content-center" *ngIf="isReady">
-      <div class="col-md-8">
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
         <form novalidate (ngSubmit)="save()" [formGroup]="form">
-          <div *ngIf="model" class="card shadow">
-            <h2
-              class="card-header bg-primary text-white"
-              *ngIf="title"
-              [innerHTML]="title"
-            ></h2>
-            <h2
-              class="card-header bg-primary text-white"
-              *ngIf="!title"
-              jhiTranslate="entity.home.createOrEditLabel"
-            ></h2>
-    
+          <div *ngIf="model">
+            <div class="card-header border-0 bg-gradient-primary">
+              <h2 class="mb-0 text-white" *ngIf="title" [innerHTML]="title"></h2>
+              <h2
+                class="mb-0 text-white"
+                *ngIf="!title"
+                jhiTranslate="entity.home.createOrEditLabel"
+              ></h2>
+            </div>
             <div class="card-body">
               <jhi-alert-error></jhi-alert-error>
-    
+
               <formly-form
                 [model]="model"
                 [fields]="fields"
@@ -25,7 +23,7 @@
                 [form]="form"
               ></formly-form>
             </div>
-    
+
             <div class="card-footer">
               <button
                 type="button"
@@ -37,7 +35,7 @@
                   >Cancel</span
                 >
               </button>
-    
+
               <button
                 type="submit"
                 [disabled]="form.invalid || isSaving"
@@ -52,10 +50,6 @@
           </div>
         </form>
       </div>
-      <div class="col-md-4">
-        <pre [innerHTML]="model | json"></pre>
-      </div>
     </div>
   </div>
 </div>
-

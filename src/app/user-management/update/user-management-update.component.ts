@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LANGUAGES } from 'app/config/language.constants';
 import { User } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -58,7 +59,7 @@ export class UserManagementUpdateComponent implements OnInit {
     this.isSaving = true;
     this.updateUser(this.user);
     if (this.user.id !== undefined) {
-      this.userService.update(this.user).subscribe(
+      this.userService.update(_.omit(this.user, ['password'])).subscribe(
         () => this.onSaveSuccess(),
         () => this.onSaveError()
       );

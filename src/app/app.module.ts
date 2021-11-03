@@ -86,7 +86,7 @@ export class AppModule {
   ) {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
-    iconLibrary.addIcons(...fontAwesomeIcons);
+    // iconLibrary.addIcons(...fontAwesomeIcons);
     dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
     translateService.setDefaultLang('en');
     // if user have changed language and navigates away from the application and back to the application then use previously choosed language

@@ -1,0 +1,25 @@
+title:
+  index: Sản phẩm
+  view: Xem sản phẩm
+  update: Sửa sản phẩm
+  create: Tạo sản phẩm
+  delete: Xóa sản phẩm
+apiEndpoint: /services/product-mgmt/api/products
+predicate: id
+ascending: true
+columns:
+  - property: name
+    label: Tên
+    sortBy: name
+    searchBy: name
+    pattern: ${term}
+fields:
+  - key: name
+    type: input
+    templateOptions:
+      label: Tên
+  - key: description
+    type: textarea
+    templateOptions:
+      rows: 3
+      label: Mô tả

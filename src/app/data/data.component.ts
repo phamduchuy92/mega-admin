@@ -16,7 +16,6 @@ import { DeviceDetectorService } from "ngx-device-detector";
 import { FormGroup } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { FormlyFormOptions } from "@ngx-formly/core";
-import * as moment from "moment";
 import { plainToFlattenObject } from "app//misc/util/request-util";
 
 @Component({
@@ -241,7 +240,7 @@ export class DataComponent implements OnInit {
   clear(): void {
     this.page = 1;
     this.searchModel = {};
-    const uri = window.location.pathname;
+    const uri = `/data/${this.service}/${this.property}`;
     this.router.navigateByUrl("/").then(() =>
       this.router.navigate([uri], {
         queryParams: {

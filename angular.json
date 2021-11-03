@@ -81,7 +81,7 @@
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "argon-dashboard-angular:build",
-            "proxyConfig": "src/proxy.conf.json"
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {

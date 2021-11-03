@@ -13,7 +13,7 @@ export class UserManagementResolve implements Resolve<IUser> {
   constructor(private service: UserManagementService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IUser> {
-    const id = route.params['login'];
+    const id = route.params['id'];
     if (id) {
       return this.service.find(id);
     }
@@ -25,12 +25,12 @@ export const userManagementRoute: Routes = [
   {
     path: '',
     component: UserManagementComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
+    // data: {
+    //   defaultSort: 'id,asc',
+    // },
   },
   {
-    path: ':login/view',
+    path: ':id/view',
     component: UserManagementDetailComponent,
     resolve: {
       user: UserManagementResolve,
@@ -44,7 +44,7 @@ export const userManagementRoute: Routes = [
     },
   },
   {
-    path: ':login/edit',
+    path: ':id/edit',
     component: UserManagementUpdateComponent,
     resolve: {
       user: UserManagementResolve,

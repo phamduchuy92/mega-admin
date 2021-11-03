@@ -1,37 +1,31 @@
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
-  <div class="container-fluid">
-    <div class="header-body">
-    </div>
-  </div>
 </div>
 <div class="container-fluid mt--7">
   <div class="row">
     <div class="col">
       <div class="card shadow">
-        <div class="card-header">
-          <h2>
+        <div class="card-header border-0">
+          <h2 class="mb-0">
             <span id="user-management-page-heading" jhiTranslate="userManagement.home.title" data-cy="userManagementPageHeading">Users</span>
 
             <div class="d-flex justify-content-end">
-              <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+              <!-- <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
                 <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
                 <span jhiTranslate="userManagement.home.refreshListLabel">Refresh List</span>
-              </button>
+              </button> -->
               <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
-                <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Create a new User</span>
+                <fa-icon icon="plus"></fa-icon>&nbsp; <span jhiTranslate="userManagement.home.createLabel">Create a new User</span>
               </button>
             </div>
           </h2>
         </div>
-      </div>
-      <div class="card-body">
         <jhi-alert-error></jhi-alert-error>
 
         <jhi-alert></jhi-alert>
 
         <div class="table-responsive" *ngIf="users">
-          <table class="table table-striped" aria-describedby="user-management-page-heading">
-            <thead>
+          <table class="table align-items-center table-flush" aria-describedby="user-management-page-heading">
+            <thead class="thead-light">
               <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
                 <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
                 <th scope="col" jhiSortBy="login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
@@ -90,13 +84,13 @@
                 <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
                 <td class="text-right">
                   <div class="btn-group">
-                    <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
-                      <fa-icon icon="eye"></fa-icon>
+                    <button type="submit" [routerLink]="['./', user.id, 'view']" class="btn btn-info btn-sm">
+                      <fa-icon icon="eye"></fa-icon>&nbsp;
                       <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                     </button>
 
-                    <button type="submit" [routerLink]="['./', user.login, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
-                      <fa-icon icon="pencil-alt"></fa-icon>
+                    <button type="submit" [routerLink]="['./', user.id, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                      <fa-icon icon="pencil-alt"></fa-icon>&nbsp;
                       <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                     </button>
 
@@ -106,7 +100,7 @@
                       class="btn btn-danger btn-sm"
                       [disabled]="!currentAccount || currentAccount.login === user.login"
                     >
-                      <fa-icon icon="times"></fa-icon>
+                      <fa-icon icon="times"></fa-icon>&nbsp;
                       <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                     </button>
                   </div>
@@ -116,10 +110,10 @@
           </table>
         </div>
 
-        <div *ngIf="users">
-          <div class="row justify-content-center">
+        <div class="card-footer py-4" *ngIf="users">
+          <!-- <div class="row justify-content-center">
             <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-          </div>
+          </div> -->
 
           <div class="row justify-content-center">
             <ngb-pagination
