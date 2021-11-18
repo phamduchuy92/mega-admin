@@ -4,7 +4,7 @@
     <div class="col">
       <div class="card shadow">
         <form novalidate (ngSubmit)="save()" [formGroup]="form">
-          <div *ngIf="model">
+          <div *ngIf="model && isReady">
             <div class="card-header border-0 bg-gradient-primary">
               <h2 class="mb-0 text-white" *ngIf="title" [innerHTML]="title"></h2>
               <h2

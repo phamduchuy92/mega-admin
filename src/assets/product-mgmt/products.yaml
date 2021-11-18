@@ -4,7 +4,7 @@ title:
   update: Sửa sản phẩm
   create: Tạo sản phẩm
   delete: Xóa sản phẩm
-apiEndpoint: /services/product-mgmt/api/products
+apiEndpoint: services/product-mgmt/api/products
 predicate: id
 ascending: true
 columns:
@@ -13,13 +13,85 @@ columns:
     sortBy: name
     searchBy: name
     pattern: ${term}
+  - property: productCategoryId
+    label: Danh mục
+    apiEndpoint: services/product-mgmt/api/product-categories
+    key: id
+    val: name
+  - property: price
+    label: Giá tiền
+    sortBy: price
+    searchBy: price
+    pattern: ${term}
+  - property: quantity
+    label: Số lượng
+    sortBy: quantity
+    searchBy: quantity
+    pattern: ${term}
 fields:
-  - key: name
-    type: input
-    templateOptions:
-      label: Tên
+  - fieldGroupClassName: row
+    fieldGroup:
+    - key: name
+      type: input
+      className: col-md-6
+      templateOptions:
+        label: Tên
+        required: true
+    - key: productCategoryId
+      type: ng-select
+      className: col-md-6
+      templateOptions:
+        label: Danh mục sản phẩm
+        apiEndpoint: services/product-mgmt/api/product-categories
+        termPattern: false
+        key: id
+        val: name
+        required: true
+  - fieldGroupClassName: row
+    fieldGroup:
+    - key: price
+      type: price
+      className: col-md-6
+      templateOptions:
+        label: Giá tiền
+        required: true
+        addonRight:
+          text: VND
+    - key: quantity
+      type: input
+      className: col-md-6
+      defaultValue: 1
+      templateOptions:
+        label: Số lượng
+        required: true
+        type: number
+        min: 1
   - key: description
     type: textarea
     templateOptions:
       rows: 3
       label: Mô tả
+      required: true
+  - key: shortDescription
+    type: textarea
+    templateOptions:
+      rows: 1
+      label: Mô tả ngắn
+      required: true
+  - key: image
+    type: file-upload
+    templateOptions:
+      label: Ảnh đại diện
+      fileSrc: services/storage-mgmt/api/statics/${fileName}
+      key: Key
+      apiEndpoint: services/storage-mgmt/api/file-upload
+      required: true
+  - key: images
+    type: file-upload
+    templateOptions:
+      label: Ảnh sản phẩm
+      fileSrc: services/storage-mgmt/api/statics/${fileName}
+      key: Key
+      apiEndpoint: services/storage-mgmt/api/file-upload
+      multiple: true
+      required: true

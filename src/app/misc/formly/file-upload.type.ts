@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FieldType } from "@ngx-formly/core";
 // + HttpClient
 import { HttpClient } from "@angular/common/http";
 import { filter, map } from "rxjs/operators";
 import * as _ from "lodash";
 import { SafePipe } from "../util/safe.pipe";
-
+import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 
 @Component({
   selector: "jhi-formly-file-upload",
@@ -13,86 +13,149 @@ import { SafePipe } from "../util/safe.pipe";
     <input
       type="file"
       (change)="addFile($event)"
-      class="custom-input"
+      class="form-control"
       [disabled]="to.disabled"
       [hidden]="to.hidden == true ? true : false"
+      [multiple]="to.multiple == true ? true : false"
     />
-    <a
-      [href]="getFileSrc()"
-      [class]="to.className"
-      target="_blank"
-      *ngIf="to.hidden == true"
-      [innerHTML]="formControl.value"
-    ></a>
+    <ng-template *ngFor="let value of values">
+      <a
+        [href]="getFileSrc(value)"
+        [ngClass]="to.className ? to.className : ''"
+        target="_blank"
+        *ngIf="to.hidden == true"
+        [innerHTML]="value"
+      ></a>
+    </ng-template>
+    <ng-template *ngFor="let value of values">
+      <div
+        class="file-viewer"
+        *ngIf="to.template"
+        [innerHtml]="getTemplate(value)"
+      ></div>
+    </ng-template>
     <div
-      class="file-viewer"
-      *ngIf="to.template"
-      [innerHtml]="getTemplate()"
-    ></div>
-    <div
-      class="card-deck"
+      class="row"
       *ngIf="!to.template && formControl.value && to.hidden != true"
-      style="margin-bottom: 5px"
     >
-      <div class="card">
+      <div class="col-md-3 mb-3" *ngFor="let value of values; let i = index">
+        <a
+          [href]="getFileSrc(value)"
+          [ngClass]="to.className ? to.className : ''"
+          target="_blank"
+          *ngIf="!isImage(value)"
+          >{{ value }}</a
+        >
+        <a
+          [href]="getFileSrc(value)"
+          class="w-100"
+          [ngClass]="to.className ? to.className : ''"
+          target="_blank"
+          *ngIf="isImage(value)"
+        >
+          <img
+            [src]="getFileSrc(value)"
+            class="img-thumbnail w-100"
+            [ngClass]="to.className ? to.className : ''"
+            style="height: 200px; object-fit: cover;"
+          />
+        </a>
         <button
           type="button"
-          (click)="removeFile()"
+          (click)="removeFile(i)"
           class="btn btn-danger btn-block"
           [disabled]="to.disabled"
           [hidden]="to.hidden == true ? true : false"
         >
           <fa-icon icon="times"></fa-icon>&nbsp; Remove
         </button>
-        <a
-          [href]="getFileSrc()"
-          [class]="to.className"
-          target="_blank"
-          *ngIf="!isImage(formControl.value)"
-          >{{ formControl.value }}</a
-        >
-        <a
-          [href]="getFileSrc()"
-          [class]="to.className"
-          target="_blank"
-          *ngIf="isImage(formControl.value)"
-          ><img [src]="getFileSrc()" [class]="to.className"
-        /></a>
       </div>
     </div>
   `,
   providers: [SafePipe],
 })
-export class FileUploadTypeComponent extends FieldType {
-  fileToUpload: any;
+export class FileUploadTypeComponent extends FieldType implements OnInit {
+  files: any[] = [];
+  bucketName = "";
   defaultOptions = {
     wrappers: ["form-group"],
   };
-  constructor(private pipe: SafePipe, private httpClient: HttpClient) {
+  values: any[] = [];
+
+  constructor(
+    private pipe: SafePipe,
+    private httpClient: HttpClient,
+    private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService
+  ) {
     super();
+    const id =
+      this.localStorageService.retrieve("id") ??
+      this.sessionStorageService.retrieve("id") ??
+      "";
+    const login =
+      this.localStorageService.retrieve("login") ??
+      this.sessionStorageService.retrieve("login") ??
+      "";
+    this.bucketName = `${login}-${id}`;
+  }
+
+  ngOnInit(): void {
+    this.convertToArray(this.formControl.value);
   }
 
   // API Endpoint for Retrieve File
-  getFileSrc(): string {
+  getFileSrc(val: string): string {
     return _.isFunction(this.to.getFileSrc)
       ? this.to.getFileSrc()
       : this.to.fileSrc
-      ? this.to.fileSrc.replace("${fileId}", this.formControl.value)
+      ? this.to.fileSrc.replace(
+          "${fileName}",
+          this.bucketName != "" ? `/${this.bucketName}/${val}` : val
+        )
       : SERVER_API_URL +
-        _.get(this.to, "apiEndpoint", "api/public/upload") +
-        `/${this.formControl.value}`;
+        _.get(this.to, "apiEndpoint", "api/upload") +
+        `${this.bucketName != "" ? "/" + this.bucketName : ""}` +
+        `/${val}`;
   }
 
-  removeFile(): void {
+  removeFile(idx: number): void {
     this.httpClient
       .delete(
         SERVER_API_URL +
           _.get(this.to, "apiEndpoint", "api/upload") +
-          `/${this.formControl.value}`
+          `${this.bucketName != "" ? "/" + this.bucketName : ""}` +
+          `/${this.formControl.value[idx]}`
       )
       .subscribe(
-        () => this.formControl.setValue(null),
-        () => this.formControl.setValue(null)
+        () => {
+          if (this.to.multiple) {
+            const arr = this.formControl.value;
+            if (arr.length > 1) {
+              arr.splice(idx, 1);
+              this.formControl.setValue(arr);
+            } else {
+              this.formControl.setValue(null);
+            }
+          } else {
+            this.formControl.setValue(null);
+          }
+          this.convertToArray(this.formControl.value);
+        },
+        () => {
+          if (this.to.multiple) {
+            const arr = this.formControl.value;
+            if (arr.length > 1) {
+              arr.splice(idx, 1);
+              this.formControl.setValue(arr);
+            } else {
+              this.formControl.setValue(null);
+            }
+          } else {
+            this.formControl.setValue(null);
+          }
+          this.convertToArray(this.formControl.value);
+        }
       );
   }
 
@@ -105,7 +168,7 @@ export class FileUploadTypeComponent extends FieldType {
       alert("Invalid file extension.");
       return;
     }
-    this.fileToUpload = event.target.files.item(0);
+    this.files = event.target.files;
     this.uploadFile();
   }
 
@@ -117,12 +180,16 @@ export class FileUploadTypeComponent extends FieldType {
   }
 
   // API Endpoint for Upload File
-  protected uploadFile(): void {
+  uploadFile(): void {
     const formData = new FormData();
-    formData.append("file", this.fileToUpload, this.fileToUpload.name);
+    for (var i = 0; i < this.files.length; i++) {
+      formData.append("files", this.files[i], this.files[i].name);
+    }
     this.httpClient
       .post(
-        SERVER_API_URL + _.get(this.to, "apiEndpoint", "api/upload"),
+        SERVER_API_URL +
+          _.get(this.to, "apiEndpoint", "api/upload") +
+          `${this.bucketName != "" ? "/" + this.bucketName : ""}`,
         formData,
         { observe: "response" }
       )
@@ -131,37 +198,55 @@ export class FileUploadTypeComponent extends FieldType {
         map((res) => res.body),
         map((res) => this.postProcess(res))
       )
-      .subscribe((res) => this.formControl.setValue(res));
+      .subscribe((res) => {
+        if (this.to.multiple == true) {
+          this.formControl.setValue(
+            this.formControl.value ? this.formControl.value.concat(res) : res
+          );
+        } else {
+          this.formControl.setValue(_.toString(res));
+        }
+        this.convertToArray(this.formControl.value);
+      });
   }
-  getTemplate(): any {
-    return this.pipe.transform(
-      this.to.template.replace("${fileId}", this.formControl.value)
-    );
+
+  getTemplate(val: string): any {
+    return this.pipe.transform(this.to.template.replace("${fileName}", val));
   }
 
   // postProcess extract the file ID from the key
-  postProcess(fileInfo: any): string {
-    if (_.isString(fileInfo)) {
-      return fileInfo;
+  postProcess(filesInfo: any): string[] {
+    if (filesInfo.every((e) => _.isString(e))) {
+      return filesInfo;
     }
     if (
       this.to.key &&
       _.isString(this.to.key) &&
-      _.isString(fileInfo[this.to.key])
+      filesInfo.every((e) => _.isString(e[this.to.key]))
     ) {
-      return fileInfo[this.to.key];
+      return _.map(filesInfo, this.to.key);
     }
     if (this.to.map) {
       if (_.isString(this.to.map)) {
-        return _.template(this.to.map)(fileInfo);
+        return _.map(filesInfo, (e) => _.template(this.to.map)(e));
       } else if (_.isFunction(this.to.map)) {
-        return this.to.map(fileInfo);
+        return _.map(filesInfo, (e) => this.to.map(e));
       }
     }
-    return "";
+    return [];
   }
 
   isImage(val: string): boolean {
     return val.match(/(.jpg|.jpeg|.gif|.png)$/) ? true : false;
+  }
+
+  convertToArray(vals: any): void {
+    if (_.isArray(vals)) {
+      this.values = vals;
+    } else if (vals == null) {
+      this.values = [];
+    } else {
+      this.values = [vals];
+    }
   }
 }

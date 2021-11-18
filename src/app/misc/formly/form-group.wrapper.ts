@@ -11,7 +11,7 @@ import { FieldWrapper } from "@ngx-formly/core";
       >
         <span *ngIf="to.jhiTranslate" [jhiTranslate]="to.jhiTranslate"></span>
         <span *ngIf="!to.jhiTranslate" [innerHtml]="to.label"></span>
-        <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
+        <span *ngIf="to.required && to.hideRequiredMarker !== true"> *</span>
       </label>
       <ng-template #fieldComponent></ng-template>
       <div *ngIf="showError" class="invalid-feedback" [style.display]="'block'">

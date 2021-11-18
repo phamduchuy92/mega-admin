@@ -70,7 +70,7 @@ export class DataUpdateComponent implements OnInit {
           this.fields = _.get(config, "config.fields", []);
         })
       )
-      .subscribe(() => (this.isReady = true));
+      .subscribe(() => (this.isReady = true), () => (this.isReady = false));
   }
 
   previousState(): void {

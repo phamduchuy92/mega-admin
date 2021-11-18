@@ -56,6 +56,8 @@ import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormlyModule } from "@ngx-formly/core";
 import { FormlyBootstrapModule } from "@ngx-formly/bootstrap";
+// ngx-mask
+import { NgxMaskModule, IConfig } from "ngx-mask";
 // ngx-formly fields
 import { ButtonTypeComponent } from "./formly/button.type";
 import { TimeTypeComponent } from "./formly/timepicker.type";
@@ -65,7 +67,7 @@ import { TabsTypeComponent } from "./formly/tabs.type";
 import { CardTypeComponent } from "./formly/card.type";
 import { AccordionTypeComponent } from "./formly/accordion.type";
 import { FileUploadTypeComponent } from "./formly/file-upload.type";
-import { FileValueAccessorDirective } from "./formly/file-value-accessor";
+import { FileValueAccessor } from "./formly/file-value-accessor";
 import { TemplateTypeComponent } from "./formly/template.type";
 import { FormlyValidators } from "./formly/validators";
 import { StepperTypeComponent } from "./formly/stepper.type";
@@ -80,11 +82,16 @@ import { DatatableTypeComponent } from "./formly/datatable.type";
 import { CrudTableTypeComponent } from "./formly/crud-table.type";
 import { TreeTypeComponent } from "./formly/tree";
 import { DatetimeTypeComponent } from "./formly/datetimepicker.type";
+import { LibraryTypeComponent } from "./formly/library.type";
 // wrappers
 import { FormGroupWrapperComponent } from "./formly/form-group.wrapper";
 import { FieldsetWrapperComponent } from "./formly/fieldset.wrapper";
 // utils
 import { SafePipe } from "./util/safe.pipe";
+import { PriceTypeComponent } from "./formly/price.type";
+import { FileGridfsTypeComponent } from "./formly/file-gridfs.type";
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   imports: [
@@ -92,8 +99,11 @@ import { SafePipe } from "./util/safe.pipe";
     SharedModule,
     // + ng-select
     NgSelectModule,
+    FormsModule,
     // + ngx-color-picker
     ColorPickerModule,
+    // ngx-mask
+    NgxMaskModule.forRoot(),
     // + material
     A11yModule,
     ClipboardModule,
@@ -185,6 +195,9 @@ import { SafePipe } from "./util/safe.pipe";
         { name: "crud-table", component: CrudTableTypeComponent },
         { name: "tree", component: TreeTypeComponent },
         { name: "datetime", component: DatetimeTypeComponent },
+        { name: "library", component: LibraryTypeComponent },
+        { name: "price", component: PriceTypeComponent },
+        { name: "file-gridfs", component: FileGridfsTypeComponent },
       ],
     }),
     // + ngx-quill
@@ -260,8 +273,16 @@ import { SafePipe } from "./util/safe.pipe";
     PortalModule,
     ScrollingModule,
     // + formly
+    ReactiveFormsModule,
     FormlyModule,
     FormlyBootstrapModule,
+    // + ng-select
+    NgSelectModule,
+    FormsModule,
+    // + ngx-color-picker
+    ColorPickerModule,
+    // ngx-mask
+    NgxMaskModule,
   ],
   declarations: [
     SafePipe,
@@ -272,7 +293,7 @@ import { SafePipe } from "./util/safe.pipe";
     DateTypeComponent,
     CardTypeComponent,
     RepeatTypeComponent,
-    FileValueAccessorDirective,
+    FileValueAccessor,
     AccordionTypeComponent,
     FileUploadTypeComponent,
     TabsTypeComponent,
@@ -290,6 +311,9 @@ import { SafePipe } from "./util/safe.pipe";
     CrudTableTypeComponent,
     TreeTypeComponent,
     DatetimeTypeComponent,
+    LibraryTypeComponent,
+    PriceTypeComponent,
+    FileGridfsTypeComponent,
   ],
   providers: [SafePipe],
 })

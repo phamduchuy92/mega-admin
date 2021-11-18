@@ -1,0 +1,142 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h2 class="mb-0">
+            <span id="user-management-page-heading">Thư viện</span>
+
+            <div class="d-flex justify-content-end">
+              <!-- <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+                <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+                <span jhiTranslate="userManagement.home.refreshListLabel">Refresh List</span>
+              </button> -->
+              <button
+                class="btn btn-danger"
+                [disabled]="_.filter(assets, ['checked', true]).length == 0"
+                (click)="remove()"
+              >
+                <fa-icon icon="times"></fa-icon>&nbsp; <span>Xóa</span>
+              </button>
+              <button
+                class="btn btn-primary jh-create-entity"
+                (click)="upload()"
+              >
+                <fa-icon icon="plus"></fa-icon>&nbsp; <span>Upload</span>
+              </button>
+            </div>
+          </h2>
+        </div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <div class="row mx-3">
+          <div
+            class="col-md-3 mb-3"
+            *ngFor="let static of statics; let i = index"
+          >
+            <div class="custom-control custom-checkbox image-checkbox">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [id]="i"
+                [(ngModel)]="static.checked"
+              />
+              <label class="custom-control-label w-100" [for]="i">
+                <img
+                  class="img-thumbnail w-100"
+                  [src]="getFileSrc(static.name)"
+                  *ngIf="isImage(static.name)"
+                  style="height: 300px; object-fit: cover"
+                />
+                {{ !isImage(static.name) ? static.name : "" }}
+              </label>
+              <div class="btn-group btn-block p-0">
+                <a
+                  class="btn btn-info"
+                  [href]="getFileSrc(static.name)"
+                  target="_blank"
+                  >Xem</a
+                >
+                <button class="btn btn-warning" (click)="download(static.name)">
+                  Tải
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <!-- <div class="row justify-content-center">
+            <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+          </div> -->
+
+          <div
+            class="row justify-content-center"
+            *ngIf="this.assets.length >= this.itemsPerPage"
+          >
+            <ngb-pagination
+              [collectionSize]="totalItems"
+              [(page)]="page"
+              [pageSize]="itemsPerPage"
+              [maxSize]="5"
+              [rotate]="true"
+              [boundaryLinks]="true"
+              (pageChange)="transition()"
+            ></ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #confirmModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      (click)="modal.dismiss()"
+    >
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Bạn chắc chứ?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      Hủy
+    </button>
+    <button type="button" class="btn btn-primary" (click)="modal.close()">
+      Xác nhận
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #uploadModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      (click)="modal.dismiss()"
+    >
+      &times;
+    </button>
+  </div>
+  <div class="modal-body">
+    <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      Hủy
+    </button>
+    <button type="button" class="btn btn-primary" (click)="modal.close()">
+      Xác nhận
+    </button>
+  </div>
+</ng-template>

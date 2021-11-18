@@ -4,14 +4,14 @@ import { ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
 import { Title } from "@angular/platform-browser";
 import { FormGroup } from "@angular/forms";
-import { map } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
 
 @Component({
   selector: "jhi-data-detail",
   templateUrl: "./data-detail.component.html",
 })
-export class DataDetailComponent implements OnInit, AfterContentChecked {
+export class DataDetailComponent implements OnInit {
   _ = _;
   // state
   isReady = false;
@@ -50,13 +50,19 @@ export class DataDetailComponent implements OnInit, AfterContentChecked {
           this.titleService.setTitle(this.title);
           // formly
           this.fields = _.get(config, "config.fields", []);
+        }),
+        tap(() => {
+          this.fields.push({
+            hooks: {
+              afterContentInit: () => this.form.disable({ emitEvent: false }),
+            },
+          });
         })
       )
-      .subscribe(() => (this.isReady = true));
-  }
-
-  ngAfterContentChecked(): void {
-    this.form.disable({ emitEvent: false });
+      .subscribe(
+        () => (this.isReady = true),
+        () => (this.isReady = false)
+      );
   }
 
   previousState(): void {

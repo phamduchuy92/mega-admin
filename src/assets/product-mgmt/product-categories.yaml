@@ -24,3 +24,19 @@ fields:
     templateOptions:
       rows: 3
       label: Mô tả
+  # - key: test
+  #   type: library
+  #   templateOptions:
+  #     label: Mô tả
+  #     fileSrc: services/storage-mgmt/api/statics/${fileName}
+  #     key: name
+  #     apiEndpoint: services/storage-mgmt/api/file-list
+  #     multiple: true
+  # - key: test
+  #   type: file-upload
+  #   templateOptions:
+  #     label: Mô tả
+  #     fileSrc: services/storage-mgmt/api/statics/${fileName}
+  #     key: Key
+  #     apiEndpoint: services/storage-mgmt/api/file-upload
+  #     multiple: true

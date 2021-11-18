@@ -19,5 +19,12 @@
     "pathRewrite": {
       "^/services/order-mgmt": ""
     }
+  },
+  "/services/storage-mgmt": {
+    "target": "http://127.0.0.1:3008",
+    "secure": false,
+    "pathRewrite": {
+      "^/services/storage-mgmt": ""
+    }
   }
 }

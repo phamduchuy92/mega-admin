@@ -1,18 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { MiscModule } from 'app/misc/misc.module';
 import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
     RouterModule,
-    NgbModule,
-    SharedModule,
+    MiscModule,
   ],
   declarations: [
     FooterComponent,

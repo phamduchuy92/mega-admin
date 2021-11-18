@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpResponse, HttpHeaders } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
-import { combineLatest } from "rxjs";
+import { combineLatest, forkJoin, Observable } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { ITEMS_PER_PAGE } from "app//config/pagination.constants";
@@ -14,7 +14,7 @@ import * as jsyaml from "js-yaml";
 import { Title } from "@angular/platform-browser";
 import { DeviceDetectorService } from "ngx-device-detector";
 import { FormGroup } from "@angular/forms";
-import { map } from "rxjs/operators";
+import { map, switchMap, tap } from "rxjs/operators";
 import { FormlyFormOptions } from "@ngx-formly/core";
 import { plainToFlattenObject } from "app//misc/util/request-util";
 
@@ -61,6 +61,15 @@ export class DataComponent implements OnInit {
       awesomeIsForced: false,
     },
   };
+
+  cities = [
+    { id: 1, name: "Vilnius" },
+    { id: 2, name: "Kaunas" },
+    { id: 3, name: "Pavilnys", disabled: true },
+    { id: 4, name: "Pabradė" },
+    { id: 5, name: "Klaipėda" },
+  ];
+  selectedCity: any;
 
   constructor(
     protected titleService: Title,
@@ -293,6 +302,7 @@ export class DataComponent implements OnInit {
       const sort = (params.get("sort") ?? data["defaultSort"]).split(",");
       this.predicate = sort[0];
       this.ascending = sort[1] === "asc";
+      this.loadReferenceEndpoint();
       this.loadAll();
     });
   }
@@ -308,7 +318,6 @@ export class DataComponent implements OnInit {
   private onSuccess(data: any[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get("X-Total-Count"));
     this.rows = data;
-    this.loadReferenceEndpoint();
   }
 
   // load reference based on apiEndpoint
@@ -324,15 +333,16 @@ export class DataComponent implements OnInit {
       _.set(req, options.key, value);
       this.dataService
         .query(req, options.apiEndpoint)
+        .pipe(map((res) => res.body || []))
         .subscribe((referenceData) => {
-          this.itemsEndpoint[key] = [];
-          _.forEach(referenceData.body, (e) => {
+          _.set(this.itemsEndpoint, key, []);
+          _.forEach(referenceData, (e) => {
             _.set(
               this.reference,
               [key, _.get(e, options.key)],
               _.get(e, options.val)
             );
-            this.itemsEndpoint[key].push(_.pick(e, [options.key, options.val]));
+            this.itemsEndpoint[key].push(e);
           });
         });
     });

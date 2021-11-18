@@ -1,10 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { FieldArrayType } from "@ngx-formly/core";
+import { FieldArrayType, FieldType } from "@ngx-formly/core";
 // + HttpClient
 import { HttpClient } from "@angular/common/http";
 
 import { filter, map } from "rxjs/operators";
 import * as _ from "lodash";
+import { SafePipe } from "../util/safe.pipe";
+import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 
 @Component({
   selector: "jhi-formly-file-gridfs",
@@ -13,69 +15,128 @@ import * as _ from "lodash";
       type="file"
       (change)="addFile($event)"
       class="custom-input"
-      [disabled]="to.maxFiles && model.length >= to.maxFiles"
+      [disabled]="to.disabled"
+      [hidden]="to.hidden == true ? true : false"
+      multiple
     />
-    <div class="card-deck" style="margin-bottom: 5px">
-      <div class="card" *ngFor="let val of model; let i = index">
+    <ng-template *ngFor="let value of formControl.value">
+      <a
+        [href]="getFileSrc(value)"
+        [ngClass]="to.className ? to.className : ''"
+        target="_blank"
+        *ngIf="to.hidden == true"
+        [innerHTML]="value"
+      ></a>
+    </ng-template>
+    <ng-template *ngFor="let value of formControl.value">
+      <div
+        class="file-viewer"
+        *ngIf="to.template"
+        [innerHtml]="getTemplate(value)"
+      ></div>
+    </ng-template>
+    <div
+      class="row"
+      *ngIf="!to.template && formControl.value && to.hidden != true"
+    >
+      <div
+        class="col-md-3 mb-3"
+        *ngFor="let value of formControl.value; let i = index"
+      >
+        <a
+          [href]="getFileSrc(value)"
+          [ngClass]="to.className ? to.className : ''"
+          target="_blank"
+          *ngIf="!isImage(value)"
+          >{{ value }}</a
+        >
+        <a
+          [href]="getFileSrc(value)"
+          class="img-thumbnail w-100"
+          [ngClass]="to.className ? to.className : ''"
+          target="_blank"
+          *ngIf="isImage(value)"
+        >
+          <img
+            [src]="getFileSrc(value)"
+            class="img-thumbnail w-100"
+            [ngClass]="to.className ? to.className : ''"
+            style="height: 200px; object-fit: cover;"
+          />
+        </a>
         <button
-          type="button"
-          (click)="removeFile(val, i)"
-          class="btn btn-danger btn-block"
+          (click)="removeFile(i)"
+          class="btn btn-danger btn-block ml-1"
+          [disabled]="to.disabled"
+          [hidden]="to.hidden == true ? true : false"
         >
           <fa-icon icon="times"></fa-icon>&nbsp; Remove
         </button>
-        <a
-          [href]="getFileSrc(val)"
-          [class]="to.className"
-          target="_blank"
-          *ngIf="!isImage(val)"
-          >{{ val }}</a
-        >
-        <img
-          [src]="getFileSrc(val)"
-          [class]="to.className"
-          *ngIf="isImage(val)"
-        />
       </div>
     </div>
   `,
+  providers: [SafePipe],
 })
-export class FormlyFileGridfsComponent
-  extends FieldArrayType
-  implements OnInit
-{
-  fileToUpload: any = {};
-  uploadedFiles: any[] = [];
-
+export class FileGridfsTypeComponent extends FieldType {
+  files: any[] = [];
+  bucketName = "";
   defaultOptions = {
     wrappers: ["form-group"],
   };
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private pipe: SafePipe,
+    private httpClient: HttpClient,
+    private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService
+  ) {
     super();
+    const id =
+      this.localStorageService.retrieve("id") ??
+      this.sessionStorageService.retrieve("id") ??
+      "";
+    const login =
+      this.localStorageService.retrieve("login") ??
+      this.sessionStorageService.retrieve("login") ??
+      "";
+    this.bucketName = `${login}-${id}`;
   }
 
-  ngOnInit(): void {}
   // API Endpoint for Retrieve File
-  getFileSrc(fileId: any): string {
-    return this.to.getFileSrc
-      ? this.to.getFileSrc(fileId)
+  getFileSrc(val: string): string {
+    return _.isFunction(this.to.getFileSrc)
+      ? this.to.getFileSrc()
       : this.to.fileSrc
-      ? this.to.fileSrc.replace("${fileId}", fileId)
+      ? this.to.fileSrc.replace(
+          "${fileName}",
+          this.bucketName != "" ? `/${this.bucketName}/${val}` : val
+        )
       : SERVER_API_URL +
-        _.get(this.to, "apiEndpoint", "api/public/gridfs") +
-        `/${fileId}`;
+        _.get(this.to, "apiEndpoint", "api/upload") +
+        `${this.bucketName != "" ? "/" + this.bucketName : ""}` +
+        `/${val}`;
   }
 
-  removeFile(fileId: string, idx: number): void {
+  removeFile(idx: number): void {
     this.httpClient
       .delete(
         SERVER_API_URL +
-          _.get(this.to, "apiEndpoint", "api/gridfs") +
-          `/${fileId}`
+          _.get(this.to, "apiEndpoint", "api/upload") +
+          `${this.bucketName != "" ? "/" + this.bucketName : ""}` +
+          `/${this.formControl.value[idx]}`
       )
       .subscribe(
-        () => _.pullAt(this.model, idx),
-        () => _.pullAt(this.model, idx)
+        () =>
+          this.formControl.setValue(
+            this.formControl.value.length > 1
+              ? this.formControl.value.splice(idx, 1)
+              : null
+          ),
+        () =>
+          this.formControl.setValue(
+            this.formControl.value.length > 1
+              ? this.formControl.value.splice(idx, 1)
+              : null
+          )
       );
   }
 
@@ -88,7 +149,7 @@ export class FormlyFileGridfsComponent
       alert("Invalid file extension.");
       return;
     }
-    this.fileToUpload = event.target.files.item(0);
+    this.files = event.target.files;
     this.uploadFile();
   }
 
@@ -100,13 +161,16 @@ export class FormlyFileGridfsComponent
   }
 
   // API Endpoint for Upload File
-  protected uploadFile(): void {
-    this.formControl.setErrors({ uploading: true });
+  uploadFile(): void {
     const formData = new FormData();
-    formData.append("file", this.fileToUpload, this.fileToUpload.name);
+    for (var i = 0; i < this.files.length; i++) {
+      formData.append("files", this.files[i], this.files[i].name);
+    }
     this.httpClient
       .post(
-        SERVER_API_URL + _.get(this.to, "apiEndpoint", "api/gridfs"),
+        SERVER_API_URL +
+          _.get(this.to, "apiEndpoint", "api/upload") +
+          `${this.bucketName != "" ? "/" + this.bucketName : ""}`,
         formData,
         { observe: "response" }
       )
@@ -115,35 +179,37 @@ export class FormlyFileGridfsComponent
         map((res) => res.body),
         map((res) => this.postProcess(res))
       )
-      .subscribe(
-        (res) => {
-          this.add(undefined, res);
-          this.formControl.setErrors(null);
-        },
-        () => this.formControl.setErrors(null)
-      );
+      .subscribe((res) => {
+        this.formControl.setValue(
+          this.formControl.value ? this.formControl.value.concat(res) : res
+        );
+      });
+  }
+
+  getTemplate(val: string): any {
+    return this.pipe.transform(this.to.template.replace("${fileName}", val));
   }
 
   // postProcess extract the file ID from the key
-  postProcess(fileInfo: any): string {
-    if (_.isString(fileInfo)) {
-      return fileInfo;
+  postProcess(filesInfo: any): string[] {
+    if (filesInfo.every((e) => _.isString(e))) {
+      return filesInfo;
     }
     if (
       this.to.key &&
       _.isString(this.to.key) &&
-      _.isString(fileInfo[this.to.key])
+      filesInfo.every((e) => _.isString(e[this.to.key]))
     ) {
-      return fileInfo[this.to.key];
+      return _.map(filesInfo, this.to.key);
     }
     if (this.to.map) {
       if (_.isString(this.to.map)) {
-        return _.template(this.to.map)(fileInfo);
+        return _.map(filesInfo, (e) => _.template(this.to.map)(e));
       } else if (_.isFunction(this.to.map)) {
-        return this.to.map(fileInfo);
+        return _.map(filesInfo, (e) => this.to.map(e));
       }
     }
-    return "";
+    return [];
   }
 
   isImage(val: string): boolean {

@@ -9,7 +9,7 @@ import * as _ from "lodash";
 import { Observable } from "rxjs";
 
 @Component({
-  selector: "jhi-formly-template",
+  selector: "jhi-formly-field-template",
   template: ` <div [innerHTML]="to.innerHTML" [ngClass]="to.className"></div> `,
 })
 export class TemplateTypeComponent extends FieldType implements OnInit {
