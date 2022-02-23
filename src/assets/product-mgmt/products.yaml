@@ -66,6 +66,28 @@ fields:
         required: true
         type: number
         min: 1
+  - fieldGroupClassName: row
+    fieldGroup:
+    - key: onSale
+      type: select
+      className: col-md-6
+      templateOptions:
+        label: On sale
+        options:
+          - value: true
+            label: Yes
+          - value: false
+            label: No
+    - key: salePrice
+      type: price
+      className: col-md-6
+      expressionProperties:
+        templateOptions.disabled: 'model.onSale == false'
+        templateOptions.required: 'model.onSale == true'
+      templateOptions:
+        label: Giá sale
+        addonRight:
+          text: VND
   - key: description
     type: textarea
     templateOptions:

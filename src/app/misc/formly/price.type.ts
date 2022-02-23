@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FieldType } from "@ngx-formly/core";
 import { FormControl } from "@angular/forms";
+import * as _ from 'lodash';
 
 @Component({
   selector: "jhi-formly-field-price",
@@ -11,7 +12,8 @@ import { FormControl } from "@angular/forms";
       [formControl]="formControl"
       [formlyAttributes]="field"
       mask="separator"
-      thousandSeparator="."
+      thousandSeparator=","
+      (change)="convert()"
     />
   `,
 })
@@ -21,5 +23,13 @@ export class PriceTypeComponent extends FieldType {
   };
   constructor() {
     super();
+  }
+
+  convert(): void {
+    if (_.isString(this.formControl.value)) {
+      this.formControl.setValue(
+        _.toNumber(this.formControl.value.replace(/,/g, ""))
+      );
+    }
   }
 }
